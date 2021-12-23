@@ -1,4 +1,4 @@
-# GitHub Actions for AudioKit: includes builds, tests and releases
+# GitHub Actions for AudioKitEX: includes builds, tests and releases
 name: CI
 
 on: [push, pull_request]
