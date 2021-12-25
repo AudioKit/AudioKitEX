@@ -13,6 +13,14 @@
 
 This extension to AudioKit contains all of the AudioKit features that rely on C/C++ DSP. 
 
+## Documentation
+
+The documentation appears in the [Wiki](https://github.com/AudioKit/AudioKitEX/wiki)
+
+## Examples
+
+See the [AudioKit Cookbook](https://github.com/AudioKit/Cookbook/) for examples.
+
 ## Installation in Xcode 13
 
 You can AudioKit and any of the other AudioKit libraries using Collections
@@ -24,6 +32,4 @@ You can AudioKit and any of the other AudioKit libraries using Collections
 5. It will warn you that the collection is not signed, but it is fine, click "Add Unsigned Collection".
 6. Now you can add any of the AudioKit Swift Packages you need and read about what they do, right from within Xcode.
 
-## Examples
 
-See the [AudioKit Cookbook](https://github.com/AudioKit/Cookbook/) for examples.
