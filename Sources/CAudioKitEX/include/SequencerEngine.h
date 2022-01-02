@@ -30,14 +30,16 @@ typedef struct {
 
 typedef struct SequencerEngine* SequencerEngineRef;
 
+CF_EXTERN_C_BEGIN
+
 /// Creates the audio-thread-only state for the sequencer.
-AK_API SequencerEngineRef akSequencerEngineCreate(void);
+SequencerEngineRef akSequencerEngineCreate(void);
 
 /// Release ownership of the sequencer. Sequencer is deallocated when no render observers are live.
-AK_API void akSequencerEngineRelease(SequencerEngineRef engine);
+void akSequencerEngineRelease(SequencerEngineRef engine);
 
 /// Updates the sequence and returns a new render observer.
-AK_API AURenderObserver akSequencerEngineUpdateSequence(SequencerEngineRef engine,
+AURenderObserver akSequencerEngineUpdateSequence(SequencerEngineRef engine,
                                                         const SequenceEvent* events,
                                                         size_t eventCount,
                                                         SequenceSettings settings,
@@ -45,17 +47,19 @@ AK_API AURenderObserver akSequencerEngineUpdateSequence(SequencerEngineRef engin
                                                         AUScheduleMIDIEventBlock block);
 
 /// Returns the sequencer playhead position in beats.
-AK_API double akSequencerEngineGetPosition(SequencerEngineRef engine);
+double akSequencerEngineGetPosition(SequencerEngineRef engine);
 
 /// Move the playhead to a location in beats.
-AK_API void akSequencerEngineSeekTo(SequencerEngineRef engine, double position);
+void akSequencerEngineSeekTo(SequencerEngineRef engine, double position);
 
-AK_API void akSequencerEngineSetPlaying(SequencerEngineRef engine, bool playing);
+void akSequencerEngineSetPlaying(SequencerEngineRef engine, bool playing);
 
-AK_API bool akSequencerEngineIsPlaying(SequencerEngineRef engine);
+bool akSequencerEngineIsPlaying(SequencerEngineRef engine);
 
 /// Stop all notes currently playing.
-AK_API void akSequencerEngineStopPlayingNotes(SequencerEngineRef engine);
+void akSequencerEngineStopPlayingNotes(SequencerEngineRef engine);
 
 /// Update sequencer tempo.
-AK_API void akSequencerEngineSetTempo(SequencerEngineRef engine, double tempo);
+void akSequencerEngineSetTempo(SequencerEngineRef engine, double tempo);
+
+CF_EXTERN_C_END
