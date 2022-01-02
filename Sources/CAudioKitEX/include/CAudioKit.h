@@ -32,8 +32,10 @@ FOUNDATION_EXPORT const unsigned char AudioKitVersionString[];
 // Swift/ObjC/C/C++ Inter-operability
 #import "Interop.h"
 
+CF_EXTERN_C_BEGIN
 typedef void (^CMIDICallback)(uint8_t, uint8_t, uint8_t);
-AK_API void akCallbackInstrumentSetCallback(DSPRef dsp, CMIDICallback callback);
+void akCallbackInstrumentSetCallback(DSPRef dsp, CMIDICallback callback);
+CF_EXTERN_C_END
 
 // Misc
 #import "BufferedAudioBus.h"

@@ -2,6 +2,7 @@
 
 #include "DSPBase.h"
 #import "Internals/RingBuffer.h"
+#import "CAudioKit.h"
 
 using AudioKit::RingBuffer;
 
@@ -70,7 +71,7 @@ private:
     CMIDICallback callback = nullptr;
 };
 
-AK_API void akCallbackInstrumentSetCallback(DSPRef dsp, CMIDICallback callback) {
+void akCallbackInstrumentSetCallback(DSPRef dsp, CMIDICallback callback) {
     static_cast<CallbackInstrumentDSP*>(dsp)->setCallback(callback);
 }
 
