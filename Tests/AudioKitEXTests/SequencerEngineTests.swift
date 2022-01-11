@@ -123,7 +123,9 @@ class SequencerEngineTests: XCTestCase {
 
         // Render for 2 seconds -- enough for 8 note events at 120 bpm
         let renderSeconds = 2
-        let events = observerTest(sequence: seq, frameCount: 256, renderCallCount: Int(44100 * renderSeconds / 256))
+        let events = observerTest(sequence: seq,
+                                  frameCount: 256,
+                                  renderCallCount: Int(44100 * renderSeconds / 256))
         // Expected event positions: 1.0, 1.1, 2.0, 2.1, 3.0, 3.1, 4.0, 4.1
         // Actual event positions: 4.0, 1.0, 1.1, 2.0, 2.1, 3.0, 3.1
         XCTAssertEqual(events.count, 8)
