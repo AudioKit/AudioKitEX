@@ -85,6 +85,33 @@ open class SequencerTrack {
     /// Sequence on this track
     public var sequence = NoteEventSequence() { didSet { updateSequence() } }
 
+    /// Add a MIDI note to the track
+    /// - Parameters:
+    ///   - noteNumber: MIDI Note number to add
+    ///   - velocity: Velocity of the note
+    ///   - channel: Channel to place the note on
+    ///   - position: Location in beats of the new note
+    ///   - duration: Duration in beats of the new note
+    public func add(noteNumber: MIDINoteNumber,
+                    velocity: MIDIVelocity = 127,
+                    channel: MIDIChannel = 0,
+                    position: Double,
+                    duration: Double) {
+        sequence.add(noteNumber: noteNumber,
+                     velocity: velocity,
+                     channel: channel,
+                     position: position,
+                     duration: duration)
+    }
+
+    /// Add a MIDI event to the track
+    /// - Parameters:
+    ///   - event: Event to add
+    ///   - position: Location in time in beats to add the event at
+    public func add(event: MIDIEvent, position: Double) {
+        sequence.add(event: event, position: position)
+    }
+    
     /// Remove the notes in the track
     public func clear() {
         sequence = NoteEventSequence()
