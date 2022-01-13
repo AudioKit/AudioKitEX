@@ -185,7 +185,7 @@ open class Sequencer {
     /// Add track associated with a node
     /// - Parameter node: Node to create the track for
     /// - Returns: Track associated with the given node
-    public func addTrack(for node: Node) -> SequencerTrack {
+    @discardableResult public func addTrack(for node: Node) -> SequencerTrack {
         let track = SequencerTrack(targetNode: node)
         tracks.append(track)
         return track
