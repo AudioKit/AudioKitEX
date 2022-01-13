@@ -125,6 +125,7 @@ open class Sequencer {
     ///   - position: Location in beats of the new note
     ///   - duration: Duration in beats of the new note
     ///   - trackIndex: Which track to add the note to
+    @available(*, deprecated, message: "Access track directly for editing - sequencer.tracks[i].add(...)")
     public func add(noteNumber: MIDINoteNumber,
                     velocity: MIDIVelocity = 127,
                     channel: MIDIChannel = 0,
@@ -147,6 +148,7 @@ open class Sequencer {
     ///   - event: Event to add
     ///   - position: Location in time in beats to add the event at
     ///   - trackIndex: Which track to add the event
+    @available(*, deprecated, message: "Access track directly for editing - sequencer.tracks[i].add(...)")
     public func add(event: MIDIEvent, position: Double, trackIndex: Int = 0) {
         guard tracks.count > trackIndex, trackIndex >= 0 else {
             Log("Track index \(trackIndex) out of range (sequencer has \(tracks.count) tracks)")
