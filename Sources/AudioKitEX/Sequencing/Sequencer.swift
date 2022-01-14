@@ -117,7 +117,7 @@ open class Sequencer {
         length = tracks.max(by: { $0.length > $1.length })?.length ?? 0
     }
 
-    /// Add a MIDI note to the track
+    /// Add a MIDI noteOn and noteOff to the track
     /// - Parameters:
     ///   - noteNumber: MIDI Note number to add
     ///   - velocity: Velocity of the note
