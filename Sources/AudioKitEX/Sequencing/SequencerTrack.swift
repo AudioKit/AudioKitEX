@@ -85,7 +85,7 @@ open class SequencerTrack {
     /// Sequence on this track
     public var sequence = NoteEventSequence() { didSet { updateSequence() } }
 
-    /// Add a MIDI note to the track
+    /// Add a MIDI noteOn and noteOff to the track
     /// - Parameters:
     ///   - noteNumber: MIDI Note number to add
     ///   - velocity: Velocity of the note
