@@ -15,19 +15,19 @@ open class Sequencer {
     /// Overall playback speed
     open var tempo: BPM {
         get { return tracks.first?.tempo ?? 0 }
-        set { for track in tracks { track.tempo = newValue } }
+        set { tracks.forEach { $0.tempo = newValue } }
     }
 
     /// Length in beats
     open var length: Double {
         get { return tracks.max(by: { $0.length > $1.length })?.length ?? 0 }
-        set { for track in tracks { track.length = newValue } }
+        set { tracks.forEach { $0.length = newValue } }
     }
 
     /// Whether or not looping is enabled
     open var loopEnabled: Bool {
         get { return tracks.first?.loopEnabled ?? false }
-        set { for track in tracks { track.loopEnabled = newValue } }
+        set { tracks.forEach { $0.loopEnabled = newValue } }
     }
 
     /// Is the sequencer currently playing
@@ -63,27 +63,27 @@ open class Sequencer {
 
     /// Start playback of the track from the current position (like unpause)
     public func play() {
-        for track in tracks { track.play() }
+        tracks.forEach { $0.play() }
     }
 
     /// Start the playback of the track from the beginning
     public func playFromStart() {
-        for track in tracks { track.playFromStart() }
+        tracks.forEach { $0.playFromStart() }
     }
 
     /// Start playback after a certain number of beats
     public func playAfterDelay(beats: Double) {
-        for track in tracks { track.playAfterDelay(beats: beats) }
+        tracks.forEach { $0.playAfterDelay(beats: beats) }
     }
 
     /// Stop playback
     public func stop() {
-        for track in tracks { track.stop() }
+        tracks.forEach { $0.stop() }
     }
 
     /// Rewind playback
     public func rewind() {
-        for track in tracks { track.rewind() }
+        tracks.forEach { $0.rewind() }
     }
 
     /// Load MIDI data from a file URL
@@ -117,7 +117,7 @@ open class Sequencer {
         length = tracks.max(by: { $0.length > $1.length })?.length ?? 0
     }
 
-    /// Add a MIDI note to the track
+    /// Add a MIDI noteOn and noteOff to the track
     /// - Parameters:
     ///   - noteNumber: MIDI Note number to add
     ///   - velocity: Velocity of the note
@@ -125,6 +125,7 @@ open class Sequencer {
     ///   - position: Location in beats of the new note
     ///   - duration: Duration in beats of the new note
     ///   - trackIndex: Which track to add the note to
+    @available(*, deprecated, message: "Access track directly for editing - sequencer.tracks[i].add(...)")
     public func add(noteNumber: MIDINoteNumber,
                     velocity: MIDIVelocity = 127,
                     channel: MIDIChannel = 0,
@@ -147,6 +148,7 @@ open class Sequencer {
     ///   - event: Event to add
     ///   - position: Location in time in beats to add the event at
     ///   - trackIndex: Which track to add the event
+    @available(*, deprecated, message: "Access track directly for editing - sequencer.tracks[i].add(...)")
     public func add(event: MIDIEvent, position: Double, trackIndex: Int = 0) {
         guard tracks.count > trackIndex, trackIndex >= 0 else {
             Log("Track index \(trackIndex) out of range (sequencer has \(tracks.count) tracks)")
@@ -157,9 +159,7 @@ open class Sequencer {
 
     /// Remove all notes
     public func clear() {
-        for track in tracks {
-            track.clear()
-        }
+        tracks.forEach { $0.clear() }
     }
 
     /// Move to a new time in the playback
@@ -183,7 +183,7 @@ open class Sequencer {
     /// Add track associated with a node
     /// - Parameter node: Node to create the track for
     /// - Returns: Track associated with the given node
-    public func addTrack(for node: Node) -> SequencerTrack {
+    @discardableResult public func addTrack(for node: Node) -> SequencerTrack {
         let track = SequencerTrack(targetNode: node)
         tracks.append(track)
         return track
