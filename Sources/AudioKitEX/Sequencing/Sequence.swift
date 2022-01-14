@@ -140,7 +140,7 @@ public struct NoteEventSequence: Equatable {
         allEvents.append(contentsOf: events)
         /// Get all SequenceEvents from Notes
         var noteEvents: [SequenceEvent] = []
-        notes.forEach { note in
+        for note in notes {
             noteEvents.append(note.noteOn)
             noteEvents.append(note.noteOff)
         }

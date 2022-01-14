@@ -15,19 +15,19 @@ open class Sequencer {
     /// Overall playback speed
     open var tempo: BPM {
         get { return tracks.first?.tempo ?? 0 }
-        set { tracks.forEach { $0.tempo = newValue } }
+        set { for track in tracks { track.tempo = newValue } }
     }
 
     /// Length in beats
     open var length: Double {
         get { return tracks.max(by: { $0.length > $1.length })?.length ?? 0 }
-        set { tracks.forEach { $0.length = newValue } }
+        set { for track in tracks { track.length = newValue } }
     }
 
     /// Whether or not looping is enabled
     open var loopEnabled: Bool {
         get { return tracks.first?.loopEnabled ?? false }
-        set { tracks.forEach { $0.loopEnabled = newValue } }
+        set { for track in tracks { track.loopEnabled = newValue } }
     }
 
     /// Is the sequencer currently playing
@@ -63,27 +63,27 @@ open class Sequencer {
 
     /// Start playback of the track from the current position (like unpause)
     public func play() {
-        tracks.forEach { $0.play() }
+        for track in tracks { track.play() }
     }
 
     /// Start the playback of the track from the beginning
     public func playFromStart() {
-        tracks.forEach { $0.playFromStart() }
+        for track in tracks { track.playFromStart() }
     }
 
     /// Start playback after a certain number of beats
     public func playAfterDelay(beats: Double) {
-        tracks.forEach { $0.playAfterDelay(beats: beats) }
+        for track in tracks { track.playAfterDelay(beats: beats) }
     }
 
     /// Stop playback
     public func stop() {
-        tracks.forEach { $0.stop() }
+        for track in tracks { track.stop() }
     }
 
     /// Rewind playback
     public func rewind() {
-        tracks.forEach { $0.rewind() }
+        for track in tracks { track.rewind() }
     }
 
     /// Load MIDI data from a file URL
@@ -159,13 +159,13 @@ open class Sequencer {
 
     /// Remove all notes
     public func clear() {
-        tracks.forEach { $0.clear() }
+        for track in tracks { track.clear() }
     }
 
     /// Move to a new time in the playback
     /// - Parameter position: Time to jump to, in beats
     public func seek(to position: Double) {
-        tracks.forEach { $0.seek(to: position) }
+        for track in tracks { track.seek(to: position) }
     }
 
     /// Equivalent to stop
