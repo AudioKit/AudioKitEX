@@ -117,7 +117,7 @@ open class Sequencer {
         length = tracks.max(by: { $0.length > $1.length })?.length ?? 0
     }
 
-    /// Add a MIDI note to the track
+    /// Add a MIDI noteOn and noteOff to the track
     /// - Parameters:
     ///   - noteNumber: MIDI Note number to add
     ///   - velocity: Velocity of the note
@@ -125,6 +125,7 @@ open class Sequencer {
     ///   - position: Location in beats of the new note
     ///   - duration: Duration in beats of the new note
     ///   - trackIndex: Which track to add the note to
+    @available(*, deprecated, message: "Access track directly for editing - sequencer.tracks[i].add(...)")
     public func add(noteNumber: MIDINoteNumber,
                     velocity: MIDIVelocity = 127,
                     channel: MIDIChannel = 0,
@@ -147,6 +148,7 @@ open class Sequencer {
     ///   - event: Event to add
     ///   - position: Location in time in beats to add the event at
     ///   - trackIndex: Which track to add the event
+    @available(*, deprecated, message: "Access track directly for editing - sequencer.tracks[i].add(...)")
     public func add(event: MIDIEvent, position: Double, trackIndex: Int = 0) {
         guard tracks.count > trackIndex, trackIndex >= 0 else {
             Log("Track index \(trackIndex) out of range (sequencer has \(tracks.count) tracks)")
@@ -157,15 +159,13 @@ open class Sequencer {
 
     /// Remove all notes
     public func clear() {
-        for track in tracks {
-            track.clear()
-        }
+        for track in tracks { track.clear() }
     }
 
     /// Move to a new time in the playback
     /// - Parameter position: Time to jump to, in beats
     public func seek(to position: Double) {
-        tracks.forEach { $0.seek(to: position) }
+        for track in tracks { track.seek(to: position) }
     }
 
     /// Equivalent to stop
@@ -183,7 +183,7 @@ open class Sequencer {
     /// Add track associated with a node
     /// - Parameter node: Node to create the track for
     /// - Returns: Track associated with the given node
-    public func addTrack(for node: Node) -> SequencerTrack {
+    @discardableResult public func addTrack(for node: Node) -> SequencerTrack {
         let track = SequencerTrack(targetNode: node)
         tracks.append(track)
         return track

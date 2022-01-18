@@ -7,33 +7,37 @@
 
 #include <stdarg.h>
 
-AK_API DSPRef akCreateDSP(OSType code);
-AK_API AUParameterAddress akGetParameterAddress(const char* name);
+CF_EXTERN_C_BEGIN
 
-AK_API AUInternalRenderBlock internalRenderBlockDSP(DSPRef pDSP);
+DSPRef akCreateDSP(OSType code);
+AUParameterAddress akGetParameterAddress(const char* name);
 
-AK_API size_t inputBusCountDSP(DSPRef pDSP);
-AK_API bool canProcessInPlaceDSP(DSPRef pDSP);
+AUInternalRenderBlock internalRenderBlockDSP(DSPRef pDSP);
 
-AK_API void setBufferDSP(DSPRef pDSP, AudioBufferList* buffer, size_t busIndex);
-AK_API void allocateRenderResourcesDSP(DSPRef pDSP, uint32_t channelCount, double sampleRate);
-AK_API void deallocateRenderResourcesDSP(DSPRef pDSP);
-AK_API void resetDSP(DSPRef pDSP);
+size_t inputBusCountDSP(DSPRef pDSP);
+bool canProcessInPlaceDSP(DSPRef pDSP);
 
-AK_API void setParameterValueDSP(DSPRef pDSP, AUParameterAddress address, AUValue value);
-AK_API AUValue getParameterValueDSP(DSPRef pDSP, AUParameterAddress address);
+void setBufferDSP(DSPRef pDSP, AudioBufferList* buffer, size_t busIndex);
+void allocateRenderResourcesDSP(DSPRef pDSP, uint32_t channelCount, double sampleRate);
+void deallocateRenderResourcesDSP(DSPRef pDSP);
+void resetDSP(DSPRef pDSP);
 
-AK_API void setBypassDSP(DSPRef pDSP, bool bypassed);
-AK_API bool getBypassDSP(DSPRef pDSP);
+void setParameterValueDSP(DSPRef pDSP, AUParameterAddress address, AUValue value);
+AUValue getParameterValueDSP(DSPRef pDSP, AUParameterAddress address);
 
-AK_API void initializeConstantDSP(DSPRef pDSP, AUValue value);
+void setBypassDSP(DSPRef pDSP, bool bypassed);
+bool getBypassDSP(DSPRef pDSP);
 
-AK_API void setWavetableDSP(DSPRef pDSP, const float* table, size_t length, int index);
+void initializeConstantDSP(DSPRef pDSP, AUValue value);
 
-AK_API void deleteDSP(DSPRef pDSP);
+void setWavetableDSP(DSPRef pDSP, const float* table, size_t length, int index);
+
+void deleteDSP(DSPRef pDSP);
 
 /// Reset random seed to ensure deterministic results in tests.
-AK_API void akSetSeed(unsigned int);
+void akSetSeed(unsigned int);
+
+CF_EXTERN_C_END
 
 #ifdef __cplusplus
 
