@@ -15,7 +15,7 @@ public:
     RingBuffer<AUMIDIEvent> midiBuffer;
     dispatch_source_t timer;
 
-    GCDCallbackInstrumentDSP() {
+    CallbackInstrumentDSP() {
         // Hopefully this polling interval is ok.
         static dispatch_once_t onceToken;
         static dispatch_queue_t timerQueue;
@@ -30,7 +30,7 @@ public:
         dispatch_resume(timer);
     }
 
-    ~GCDCallbackInstrumentDSP() {
+    ~CallbackInstrumentDSP() {
         dispatch_source_cancel(timer);
         timer = nil;
     }
