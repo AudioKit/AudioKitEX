@@ -29,7 +29,7 @@ FOUNDATION_EXPORT const unsigned char AudioKitVersionString[];
 #import "ParameterRamper.h"
 #import "ParameterAutomation.h"
 
-// Swift/ObjC/C/C++ Inter-operability
+// Swift/ObjC/C/C++ Interoperability
 #import "Interop.h"
 
 CF_EXTERN_C_BEGIN

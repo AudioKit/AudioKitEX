@@ -64,7 +64,7 @@ extension Array where Element == SequenceEvent {
 public struct NoteEventSequence: Equatable {
     /// Array of sequence notes
     public var notes: [SequenceNote]
-    /// Array of sequenc events
+    /// Array of sequence events
     public var events: [SequenceEvent]
 
     /// Initialize with notes and events
@@ -115,7 +115,7 @@ public struct NoteEventSequence: Equatable {
         notes.removeAll { $0.noteOn.beat == position }
     }
 
-    /// Remove all occurences of a certain MIDI Note nUmber
+    /// Remove all occurrences of a certain MIDI Note nUmber
     /// - Parameter noteNumber: Note to remove
     public mutating func removeAllInstancesOf(noteNumber: MIDINoteNumber) {
         notes.removeAll { $0.noteOn.data1 == noteNumber }
