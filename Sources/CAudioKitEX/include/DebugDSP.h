@@ -9,7 +9,7 @@
 extern "C" {
 #endif
 
-/// Activate or deactive DSP kernel debugging.
+/// Activate or deactivate DSP kernel debugging.
 void DebugDSPSetActive(bool active);
 
 /// Update the hash at the selected slot with a new value.

@@ -72,7 +72,7 @@ open class SequencerTrack {
         akSequencerEngineStopPlayingNotes(engine)
     }
 
-    /// Set the current position to the start ofthe track
+    /// Set the current position to the start of the track
     public func rewind() {
         seek(to: 0)
     }

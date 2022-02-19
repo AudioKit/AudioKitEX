@@ -11,7 +11,7 @@
 
 </div>
 
-This extension to AudioKit contains all of the AudioKit features that rely on C/C++ DSP. 
+This extension to AudioKit contains all of the AudioKit features that rely on C/C++ DSP.
 
 ## Documentation
 
