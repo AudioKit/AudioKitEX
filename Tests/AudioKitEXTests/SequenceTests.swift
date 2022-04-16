@@ -52,5 +52,55 @@ class NoteEventSequenceTests: XCTestCase {
         XCTAssertEqual(seq.notes[1].noteOn.data1, 62)
     }
 
+    func testNoteOffAlwaysBeforeNoteOnInBeatTimeOrdered() {
+        let noteOn = SequenceEvent(status: noteOnByte, data1: 60, data2: 0, beat: 0)
+        let noteOff = SequenceEvent(status: noteOffByte, data1: 60, data2: 0, beat: 0)
+        let otherNoteOn = SequenceEvent(status: noteOnByte, data1: 61, data2: 0, beat: 0)
+
+        let sequences = [
+            [noteOn, noteOff, otherNoteOn],
+            [noteOn, otherNoteOn, noteOff],
+            [noteOff, noteOn , otherNoteOn],
+            [noteOff, otherNoteOn, noteOn],
+            [otherNoteOn, noteOn, noteOff],
+            [otherNoteOn, noteOff, noteOn]
+        ]
+
+        for sequence in sequences {
+            let ordered = sequence.beatTimeOrdered()
+            XCTAssertLessThan(ordered.firstIndex(of: noteOff)!, ordered.firstIndex(of: noteOn)!)
+        }
+    }
+
+    func testEarlierNoteBeforeInBeatTimeOrderedForSameNoteSameStatus() {
+        let earlier = SequenceEvent(status: noteOnByte, data1: 60, data2: 0, beat: 0)
+        let later = SequenceEvent(status: noteOnByte, data1: 60, data2: 0, beat: 1)
+
+        let sequences = [
+            [earlier, later],
+            [later, earlier],
+        ]
+
+        for sequence in sequences {
+            let ordered = sequence.beatTimeOrdered()
+            XCTAssertLessThan(ordered.firstIndex(of: earlier)!, ordered.firstIndex(of: later)!)
+        }
+    }
+
+    func testEarlierNoteBeforeInBeatTimeOrderedForSameNoteDifferentStatus() {
+        let earlier = SequenceEvent(status: noteOnByte, data1: 60, data2: 0, beat: 0)
+        let later = SequenceEvent(status: noteOffByte, data1: 60, data2: 0, beat: 1)
+
+        let sequences = [
+            [earlier, later],
+            [later, earlier],
+        ]
+
+        for sequence in sequences {
+            let ordered = sequence.beatTimeOrdered()
+            XCTAssertLessThan(ordered.firstIndex(of: earlier)!, ordered.firstIndex(of: later)!)
+        }
+    }
+
 }
 #endif

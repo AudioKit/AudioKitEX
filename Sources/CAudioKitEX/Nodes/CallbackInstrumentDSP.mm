@@ -13,21 +13,26 @@ public:
     // MARK: Member Functions
 
     RingBuffer<AUMIDIEvent> midiBuffer;
-    NSTimer* timer;
+    dispatch_source_t timer;
 
     CallbackInstrumentDSP() {
         // Hopefully this polling interval is ok.
-        timer = [NSTimer timerWithTimeInterval:0.01
-                                       repeats:true
-                                         block:^(NSTimer * _Nonnull timer) {
+        static dispatch_once_t onceToken;
+        static dispatch_queue_t timerQueue;
+        dispatch_once(&onceToken, ^{
+            timerQueue = dispatch_queue_create("audio.kit.timer.queue", DISPATCH_QUEUE_CONCURRENT);
+        });
+        timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, timerQueue);
+        dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC, 0);
+        dispatch_source_set_event_handler(timer, ^{
             consumer();
-        }];
-        NSRunLoop *runner = [NSRunLoop currentRunLoop];
-        [runner addTimer:timer forMode: NSDefaultRunLoopMode];
+        });
+        dispatch_resume(timer);
     }
 
     ~CallbackInstrumentDSP() {
-        [timer invalidate];
+        dispatch_source_cancel(timer);
+        timer = nil;
     }
 
     void process(FrameRange range) override {

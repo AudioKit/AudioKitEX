@@ -173,7 +173,7 @@ open class Sequencer {
         stop()
     }
 
-    /// Retrived a track for a given node
+    /// Retrieved a track for a given node
     /// - Parameter node: Node you want to access the tack for
     /// - Returns: Track associated with the given node
     public func getTrackFor(node: Node) -> SequencerTrack? {
