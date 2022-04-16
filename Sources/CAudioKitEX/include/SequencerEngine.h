@@ -38,13 +38,16 @@ SequencerEngineRef akSequencerEngineCreate(void);
 /// Release ownership of the sequencer. Sequencer is deallocated when no render observers are live.
 void akSequencerEngineRelease(SequencerEngineRef engine);
 
-/// Updates the sequence and returns a new render observer.
-AURenderObserver akSequencerEngineUpdateSequence(SequencerEngineRef engine,
-                                                        const SequenceEvent* events,
-                                                        size_t eventCount,
-                                                        SequenceSettings settings,
-                                                        double sampleRate,
-                                                        AUScheduleMIDIEventBlock block);
+/// Updates the sequence atomically.
+void akSequencerEngineUpdateSequence(SequencerEngineRef engine,
+                                     const SequenceEvent* events,
+                                     size_t eventCount,
+                                     SequenceSettings settings,
+                                     double sampleRate,
+                                     AUScheduleMIDIEventBlock block);
+
+/// Returns function to be called on audio thread.
+AURenderObserver akSequencerGetRenderObserver(SequencerEngineRef engine);
 
 /// Returns the sequencer playhead position in beats.
 double akSequencerEngineGetPosition(SequencerEngineRef engine);

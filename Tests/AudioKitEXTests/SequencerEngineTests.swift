@@ -34,12 +34,14 @@ class SequencerEngineTests: XCTestCase {
 
         let orderedEvents = sequence.beatTimeOrderedEvents()
         orderedEvents.withUnsafeBufferPointer { (eventsPtr: UnsafeBufferPointer<SequenceEvent>) -> Void in
-            let observer = akSequencerEngineUpdateSequence(engine,
-                                                           eventsPtr.baseAddress,
-                                                           orderedEvents.count,
-                                                           settings,
-                                                           44100,
-                                                           block)!
+            akSequencerEngineUpdateSequence(engine,
+                                            eventsPtr.baseAddress,
+                                            orderedEvents.count,
+                                            settings,
+                                            44100,
+                                            block)
+
+            let observer = akSequencerGetRenderObserver(engine)!
 
             var timeStamp = AudioTimeStamp()
             timeStamp.mSampleTime = 0

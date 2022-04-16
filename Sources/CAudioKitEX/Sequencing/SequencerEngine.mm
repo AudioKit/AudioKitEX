@@ -219,27 +219,29 @@ void akSequencerEngineRelease(SequencerEngineRef engine) {
 }
 
 /// Updates the sequence and returns a new render observer.
-AURenderObserver akSequencerEngineUpdateSequence(SequencerEngineRef engine,
-                                                 const SequenceEvent* eventsPtr,
-                                                 size_t eventCount,
-                                                 SequenceSettings settings,
-                                                 double sampleRate,
-                                                 AUScheduleMIDIEventBlock block) {
-
-    // impl is captured in the render observer block.
-    auto impl = engine->impl;
-
+void akSequencerEngineUpdateSequence(SequencerEngineRef engine,
+                                     const SequenceEvent* eventsPtr,
+                                     size_t eventCount,
+                                     SequenceSettings settings,
+                                     double sampleRate,
+                                     AUScheduleMIDIEventBlock block) {
     auto data = new SequencerData;
     data->settings = settings;
     data->sampleRate = sampleRate;
     data->midiBlock = block;
     data->events = {eventsPtr, eventsPtr+eventCount};
-    impl->data.set(data);
+    engine->impl->data.set(data);
+}
+
+AURenderObserver akSequencerGetRenderObserver(SequencerEngineRef engine) {
+
+    // impl is captured in the render observer block.
+    auto impl = engine->impl;
 
     return ^void(AudioUnitRenderActionFlags actionFlags,
-                 const AudioTimeStamp *timestamp,
-                 AUAudioFrameCount frameCount,
-                 NSInteger outputBusNumber)
+                     const AudioTimeStamp *timestamp,
+                     AUAudioFrameCount frameCount,
+                     NSInteger outputBusNumber)
     {
         if (actionFlags != kAudioUnitRenderAction_PreRender) return;
         impl->process(frameCount);

@@ -10,7 +10,7 @@ import AudioKit
 open class SequencerTrack {
 
     /// Node sequencer sends data to
-    public var targetNode: Node?
+    public var targetNode: Node? { didSet { addRenderObserver() }}
 
     /// Length of the track in beats
     public var length: Double = 4 { didSet { updateSequence() }}
@@ -123,7 +123,6 @@ open class SequencerTrack {
     }
 
     private var renderObserverToken: Int?
-    public var renderObserver: AURenderObserver?
 
     private func updateSequence() {
         guard let block = targetNode?.avAudioNode.auAudioUnit.scheduleMIDIEventBlock else {
@@ -139,19 +138,25 @@ open class SequencerTrack {
 
         let orderedEvents = sequence.beatTimeOrderedEvents()
         orderedEvents.withUnsafeBufferPointer { (eventsPtr: UnsafeBufferPointer<SequenceEvent>) -> Void in
-            guard let observer = akSequencerEngineUpdateSequence(engine,
-                                                                 eventsPtr.baseAddress,
-                                                                 orderedEvents.count,
-                                                                 settings,
-                                                                 Settings.sampleRate,
-                                                                 block) else { return }
 
+            akSequencerEngineUpdateSequence(engine,
+                                            eventsPtr.baseAddress,
+                                            orderedEvents.count,
+                                            settings,
+                                            Settings.sampleRate,
+                                            block)
+
+
+        }
+
+        addRenderObserver()
+    }
+
+    private func addRenderObserver() {
+        if renderObserverToken == nil {
+            guard let observer = akSequencerGetRenderObserver(engine) else { return }
             guard let auAudioUnit = targetNode?.avAudioNode.auAudioUnit else { return }
-
-            renderObserver = observer
-            if renderObserverToken == nil {
-                renderObserverToken = auAudioUnit.token(byAddingRenderObserver: observer)
-            }
+            renderObserverToken = auAudioUnit.token(byAddingRenderObserver: observer)
         }
     }
 }
