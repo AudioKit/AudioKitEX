@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <atomic>
 #include "Internals/RingBuffer.h"
-#include "Internals/AtomicDataPtr.h"
+#include "AtomicDataPtr.h"
 
 using AudioKit::RingBuffer;
 
