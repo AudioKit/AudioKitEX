@@ -5,7 +5,7 @@
 
 Pod::Spec.new do |spec|
   spec.name = 'AudioKitEX'
-  spec.version = '5.4'
+  spec.version = '5.4.1'
   spec.license =  { :type => 'MIT', :file => "LICENSE" }
   spec.homepage = 'https://audiokit.io/'
   spec.documentation_url = 'http://audiokit.io/docs/'
