@@ -7,7 +7,7 @@ import AVFoundation
 import AudioKitEX
 
 class SequencerTests: XCTestCase {
-    func testFirstNote() {
+    func testAddNoteWhilePlaying() {
         let engine = AudioEngine()
         let sampler = AppleSampler()
         let sampleURL = Bundle.module.url(forResource: "TestResources/middleC", withExtension: "wav")
@@ -25,9 +25,10 @@ class SequencerTests: XCTestCase {
         engine.output = sampler
         try? engine.start()
         sequencer.addTrack(for: sampler)
+        sequencer.play()
+        XCTAssertTrue(sequencer.isPlaying)
         sequencer.tracks[0].add(noteNumber: 60, position: 0.0, duration: 1.0)
         sequencer.tracks[1].add(noteNumber: 64, position: 0.0, duration: 1.0)
-        sequencer.play()
         sleep(2)
     }
 }
