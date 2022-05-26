@@ -69,9 +69,10 @@ public struct NoteEventSequence: Equatable {
     /// - Parameters:
     ///   - notes: Array of sequence notes
     ///   - events: Array of sequence events
-    public init(notes: [SequenceNote] = [], events: [SequenceEvent] = []) {
+    public init(notes: [SequenceNote] = [], events: [SequenceEvent] = [], totalDuration: Double = 0.0) {
         self.notes = notes
         self.events = events
+        self.totalDuration = totalDuration
     }
 
     /// Add a note
