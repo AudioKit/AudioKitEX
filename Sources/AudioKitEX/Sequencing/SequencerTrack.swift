@@ -83,7 +83,16 @@ open class SequencerTrack {
     }
 
     /// Sequence on this track
-    public var sequence = NoteEventSequence() { didSet { updateSequence() } }
+    public var sequence = NoteEventSequence() {
+        willSet {
+            if newValue.totalDuration >= length {
+                Log("Warning: Note event sequence duration exceeds the bounds of the sequencer track")
+                length = newValue.totalDuration + 0.01
+                Log("Track length set to \(length) beats")
+            }
+        }
+        didSet { updateSequence() }
+    }
 
     /// Add a MIDI noteOn and noteOff to the track
     /// - Parameters:
