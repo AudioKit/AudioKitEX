@@ -130,10 +130,11 @@ class SequencerTrackTests: XCTestCase {
         try? sampler.loadAudioFile(audioFile)
         let sequencer = Sequencer(targetNode: sampler)
         engine.output = sampler
+        let audio = engine.startTest(totalDuration: 4.0)
         sequencer.addTrack(for: sampler)
         sequencer.play()
         XCTAssertTrue(sequencer.isPlaying)
-        let audio = engine.startTest(totalDuration: 2.0)
+        audio.append(engine.render(duration: 2.0))
 
         sequencer.tracks[0].add(noteNumber: 60, position: 0.0, duration: 1.0)
         sequencer.tracks[1].add(noteNumber: 64, position: 0.0, duration: 1.0)
