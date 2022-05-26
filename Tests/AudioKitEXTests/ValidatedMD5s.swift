@@ -21,5 +21,5 @@ let validatedMD5s: [String: String] = [
     "-[SequencerTrackTests testLoop]": "3a7ebced69ddc6669932f4ee48dabe2b",
     "-[SequencerTrackTests testOneShot]": "3fbf53f1139a831b3e1a284140c8a53c",
     "-[SequencerTrackTests testTempo]": "1eb7efc6ea54eafbe616dfa8e1a3ef36",
-    "-[SequencerTrackTests testTrackBounds]": "518fcaf438b4465e27e7b5afeddd89b8"
+    "-[SequencerTrackTests testTrackBounds]": "54fd71ad1320b13cefdc83fe74d4ebce"
 ]
