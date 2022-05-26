@@ -113,6 +113,40 @@ class SequencerTrackTests: XCTestCase {
         testMD5(audio)
 
     }
+    
+    func testTrackBounds() {
+        let engine = AudioEngine()
+        let sampler = AppleSampler()
+        let sampleURL = Bundle.module.url(forResource: "TestResources/middleC", withExtension: "wav")
+        guard let sampleURL = sampleURL else {
+            Log("Problem getting sample URL")
+            return
+        }
+        let audioFile = try? AVAudioFile(forReading: sampleURL)
+        guard let audioFile = audioFile else {
+            Log("Problem getting sample file")
+            return
+        }
+        try? sampler.loadAudioFile(audioFile)
+        let sequencer = Sequencer(targetNode: sampler)
+        engine.output = sampler
+        sequencer.addTrack(for: sampler)
+        sequencer.play()
+        XCTAssertTrue(sequencer.isPlaying)
+
+        sequencer.tracks[0].add(noteNumber: 60, position: 0.0, duration: 1.0)
+        sequencer.tracks[1].add(noteNumber: 64, position: 0.0, duration: 1.0)
+        sequencer.tracks[0].add(noteNumber: 60, position: 1.0, duration: 1.0)
+        sequencer.tracks[1].add(noteNumber: 64, position: 1.0, duration: 1.0)
+        sequencer.tracks[0].add(noteNumber: 60, position: 2.0, duration: 1.0)
+        sequencer.tracks[1].add(noteNumber: 64, position: 2.0, duration: 1.0)
+        sequencer.tracks[0].add(noteNumber: 60, position: 3.0, duration: 1.0)
+        sequencer.tracks[1].add(noteNumber: 64, position: 3.0, duration: 1.0)
+
+        let audio = engine.startTest(totalDuration: 4.0)
+        audio.append(engine.render(duration: 4.0))
+        testMD5(audio)
+    }
 
 }
 #endif

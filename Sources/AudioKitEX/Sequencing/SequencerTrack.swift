@@ -15,6 +15,9 @@ open class SequencerTrack {
     /// Length of the track in beats
     public var length: Double = 4 { didSet { updateSequence() }}
 
+    // Keep track of total note durations
+    private var totalDuration: Double = 0.0
+
     /// Speed of the track in beats per minute
     public var tempo: BPM = 120 { didSet { akSequencerEngineSetTempo(engine, tempo) }}
 
@@ -97,6 +100,12 @@ open class SequencerTrack {
                     channel: MIDIChannel = 0,
                     position: Double,
                     duration: Double) {
+        totalDuration += duration
+        if totalDuration >= length {
+            Log("Error: Note durations must be less than track length in total.")
+            length = totalDuration + 0.01
+            Log("Increased track length to \(length) beats")
+        }
         sequence.add(noteNumber: noteNumber,
                      velocity: velocity,
                      channel: channel,
