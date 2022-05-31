@@ -114,5 +114,26 @@ class SequencerTrackTests: XCTestCase {
 
     }
 
+    func testNoteBounds() {
+        let engine = AudioEngine()
+        let sampler = AppleSampler()
+        let sampleURL = Bundle.module.url(forResource: "TestResources/sinechirp", withExtension: "wav")!
+        let audioFile = try! AVAudioFile(forReading: sampleURL)
+        try! sampler.loadAudioFile(audioFile)
+
+        let track = SequencerTrack(targetNode: sampler)
+        engine.output = sampler
+
+        track.add(noteNumber: 60, position: 0.0, duration: 1.0)
+        track.add(noteNumber: 60, position: 1.0, duration: 1.0)
+        track.add(noteNumber: 60, position: 2.0, duration: 1.0)
+        track.add(noteNumber: 60, position: 3.0, duration: 1.0)
+
+        track.playFromStart()
+        XCTAssertTrue(track.isPlaying)
+        let audio = engine.startTest(totalDuration: 5.0)
+        audio.append(engine.render(duration: 5.0))
+        testMD5(audio)
+    }
 }
 #endif

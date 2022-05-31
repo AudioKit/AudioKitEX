@@ -63,14 +63,16 @@ public struct NoteEventSequence: Equatable {
     public var notes: [SequenceNote]
     /// Array of sequence events
     public var events: [SequenceEvent]
+    private(set) var totalDuration: Double = 0.0
 
     /// Initialize with notes and events
     /// - Parameters:
     ///   - notes: Array of sequence notes
     ///   - events: Array of sequence events
-    public init(notes: [SequenceNote] = [], events: [SequenceEvent] = []) {
+    public init(notes: [SequenceNote] = [], events: [SequenceEvent] = [], totalDuration: Double = 0.0) {
         self.notes = notes
         self.events = events
+        self.totalDuration = totalDuration
     }
 
     /// Add a note
@@ -85,6 +87,7 @@ public struct NoteEventSequence: Equatable {
                              channel: MIDIChannel = 0,
                              position: Double,
                              duration: Double) {
+        totalDuration += duration
         var newNote = SequenceNote()
 
         newNote.noteOn.status = noteOnByte

@@ -25,7 +25,7 @@ class NoteEventSequenceTests: XCTestCase {
         newNote.noteOff.data2 = 127
         newNote.noteOff.beat = 2.0
         
-        XCTAssertEqual(seq, NoteEventSequence(notes: [newNote], events: []))
+        XCTAssertEqual(seq, NoteEventSequence(notes: [newNote], events: [], totalDuration: 1.0))
     }
 
     func testRemoveNote() {
