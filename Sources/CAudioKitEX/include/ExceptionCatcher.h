@@ -2,12 +2,11 @@
 
 //  Inspired by https://github.com/RedRoma/SwiftExceptionCatcher
 
-#ifndef ExceptionCatcher_h
-#define ExceptionCatcher_h
+#pragma once
 
 #import <Foundation/Foundation.h>
 
 void ExceptionCatcherOperation(void (^ _Nonnull tryBlock)(void),
                                void (^ _Nullable catchBlock)(NSException * _Nonnull));
 
-#endif /* ExceptionCatcher_h */
+

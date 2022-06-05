@@ -1,7 +1,6 @@
 // Copyright AudioKit. All Rights Reserved. Revision History at http://github.com/AudioKit/AudioKit/
 
-#ifndef RingBuffer_hpp
-#define RingBuffer_hpp
+#pragma once
 
 #include <atomic>
 #include <cstddef> // size_t
@@ -97,4 +96,4 @@ template <typename T> class RingBuffer {
 
 } // namespace AudioKit
 
-#endif // RingBuffer_hpp
+

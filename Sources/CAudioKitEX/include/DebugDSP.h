@@ -1,7 +1,6 @@
 // Copyright AudioKit. All Rights Reserved. Revision History at http://github.com/AudioKit/AudioKit/
 
-#ifndef DebugDSP_h
-#define DebugDSP_h
+#pragma once
 
 #include <stdbool.h>
 
@@ -24,4 +23,4 @@ bool DebugDSPCheck(int slot, const char* expected);
 }
 #endif
 
-#endif /* DebugDSP_h */
+
