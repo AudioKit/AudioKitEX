@@ -41,6 +41,7 @@ CF_EXTERN_C_END
 
 #ifdef __cplusplus
 
+#include <atomic>
 #import <vector>
 
 struct FrameRange {
