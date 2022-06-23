@@ -162,7 +162,46 @@ public:
     /// override this if your DSP kernel allocates memory; free it here
     virtual void deinit();
 
-    virtual void handleMIDIEvent(AUMIDIEvent const& midiEvent) {}
+    /// Override to handle midi events manually. By default this calls noteOn and noteOff
+    /// to save you from having to parse MIDI. Eventually, we'll add more.
+    virtual void handleMIDIEvent(AUMIDIEvent const& midiEvent) {
+
+        if (midiEvent.length != 3) return;
+        uint8_t status = midiEvent.data[0] & 0xF0;
+        uint8_t channel = midiEvent.data[0] & 0x0F;
+        switch (status) {
+            case MIDI_NOTE_ON : {
+                uint8_t note = midiEvent.data[1];
+                uint8_t veloc = midiEvent.data[2];
+                if (note > 127 || veloc > 127) break;
+
+                // A note on message with velocity 0 is actually a note off!
+                // Who woulda thunk?!
+                // See https://www.midi.org/forum/228-writing-midi-software-send-note-off,-or-zero-velocity-note-on
+
+                if (veloc == 0) {
+                    noteOff(note, veloc);
+                } else {
+                    noteOn(note, veloc);
+                }
+                break;
+            }
+            case MIDI_NOTE_OFF : {
+                uint8_t note = midiEvent.data[1];
+                uint8_t veloc = midiEvent.data[2];
+                if (note > 127) break;
+                noteOff(note, veloc);
+                break;
+            }
+        }
+
+    }
+
+    /// Override to handle MIDI note on messages.
+    virtual void noteOn(uint8_t note, uint8_t velocity) {}
+
+    /// Override to handle MIDI note off messages. Velocity can refer to a release envelope.
+    virtual void noteOff(uint8_t note, uint8_t velocity) {}
 
     /// Pointer to a factory function.
     using CreateFunction = DSPRef (*)();
