@@ -1,11 +1,11 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.5
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
 let package = Package(
     name: "AudioKitEX",
-    platforms: [.macOS(.v10_13), .iOS(.v13), .tvOS(.v11)],
+    platforms: [.macOS(.v12), .iOS(.v13), .tvOS(.v13)],
     products: [.library(name: "AudioKitEX", targets: ["AudioKitEX"])],
     dependencies: [.package(url: "https://github.com/AudioKit/AudioKit", from: "5.4.0")],
     targets: [
