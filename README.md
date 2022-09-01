@@ -15,7 +15,7 @@ This extension to AudioKit contains all of the AudioKit features that rely on C/
 
 ## Documentation
 
-The documentation appears in the [Wiki](https://github.com/AudioKit/AudioKitEX/wiki)
+The documentation appears in the [AudioKit.io website](https://www.audiokit.io/AudioKitEX/documentation/audiokitex)
 
 ## Examples
 
