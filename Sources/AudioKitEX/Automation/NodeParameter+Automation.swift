@@ -16,29 +16,8 @@ extension NodeParameter {
     ///
     /// - Parameter events: automation curve
     /// - Parameter startTime: optional time to start automation
-    public func automate(events: [AutomationEvent], startTime: AVAudioTime? = nil) {
-        var lastRenderTime = avAudioNode.lastRenderTime ?? AVAudioTime(sampleTime: 0, atRate: Settings.sampleRate)
-        
-        if !lastRenderTime.isSampleTimeValid {
-            if let engine = avAudioNode.engine, engine.isInManualRenderingMode {
-                lastRenderTime = AVAudioTime(sampleTime: engine.manualRenderingSampleTime,
-                                             atRate: Settings.sampleRate)
-            } else {
-                lastRenderTime = AVAudioTime(sampleTime: 0, atRate: Settings.sampleRate)
-            }
-        }
-        
-        var lastTime = startTime ?? lastRenderTime
-        
-        if lastTime.isHostTimeValid {
-            // Convert to sample time.
-            let lastTimeSeconds = AVAudioTime.seconds(forHostTime: lastRenderTime.hostTime)
-            let startTimeSeconds = AVAudioTime.seconds(forHostTime: lastTime.hostTime)
-            
-            lastTime = lastRenderTime.offset(seconds: startTimeSeconds - lastTimeSeconds)
-        }
-        
-        assert(lastTime.isSampleTimeValid)
+    public func automate(events: [AutomationEvent], startTime: AUEventSampleTime = AUEventSampleTimeImmediate) {
+
         stopAutomation()
         
         events.withUnsafeBufferPointer { automationPtr in
@@ -46,20 +25,20 @@ extension NodeParameter {
             guard let automationBaseAddress = automationPtr.baseAddress else { return }
             
             guard let observer = ParameterAutomationGetRenderObserver(parameter.address,
-                                                                      avAudioNode.auAudioUnit.scheduleParameterBlock,
+                                                                      auAudioUnit!.scheduleParameterBlock,
                                                                       Float(Settings.sampleRate),
-                                                                      Float(lastTime.sampleTime),
+                                                                      Float(startTime),
                                                                       automationBaseAddress,
                                                                       events.count) else { return }
             
-            renderObserverToken = avAudioNode.auAudioUnit.token(byAddingRenderObserver: observer)
+            renderObserverToken = auAudioUnit!.token(byAddingRenderObserver: observer)
         }
     }
 
     /// Stop automation
     public func stopAutomation() {
         if let token = renderObserverToken {
-            avAudioNode.auAudioUnit.removeRenderObserver(token)
+            auAudioUnit?.removeRenderObserver(token)
         }
     }
 

@@ -11,7 +11,7 @@ import Foundation
 /// Old CallbackInstrument renamed to MIDICallbackInstrument
 /// If you have used this before, you should be able to simply switch to MIDICallbackInstrument
 open class CallbackInstrument: Node {
-    
+
     /// Connected nodes
     public var connections: [Node] { [] }
 
@@ -25,6 +25,10 @@ open class CallbackInstrument: Node {
         if let callback = midiCallback {
             akCallbackInstrumentSetCallback(au.dsp, callback)
         }
+    }
+
+    public var au: AUAudioUnit {
+        avAudioNode.auAudioUnit
     }
 
 }

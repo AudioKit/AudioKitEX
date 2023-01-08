@@ -15,6 +15,10 @@ public class Fader: Node {
     /// Underlying AVAudioNode
     public var avAudioNode = instantiate(effect: "fder")
 
+    public var au: AUAudioUnit {
+        avAudioNode.auAudioUnit
+    }
+
     // MARK: - Parameters
 
     /// Amplification Factor
@@ -111,7 +115,7 @@ public class Fader: Node {
     /// - Parameters:
     ///   - events: List of events
     ///   - startTime: start time
-    public func automateGain(events: [AutomationEvent], startTime: AVAudioTime? = nil) {
+    public func automateGain(events: [AutomationEvent], startTime: AUEventSampleTime = AUEventSampleTimeImmediate) {
         $leftGain.automate(events: events, startTime: startTime)
         $rightGain.automate(events: events, startTime: startTime)
     }

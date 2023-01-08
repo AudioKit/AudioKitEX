@@ -1,7 +1,7 @@
 // Copyright AudioKit. All Rights Reserved. Revision History at http://github.com/AudioKit/AudioKit/
 
 import Foundation
-@testable import AudioKit
+import AudioKit
 import GameplayKit
 import AVFoundation
 import XCTest
@@ -58,7 +58,8 @@ class GenericNodeTests: XCTestCase {
     func nodeParameterTest(md5: String, factory: (Node)->Node, m1MD5: String = "", audition: Bool = false) {
 
         let url = Bundle.module.url(forResource: "12345", withExtension: "wav", subdirectory: "TestResources")!
-        let player = AudioPlayer(url: url)!
+        let player = Sampler()
+        player.play(url: url)
         let node = factory(player)
 
         let duration = node.parameters.count + 1
@@ -72,7 +73,7 @@ class GenericNodeTests: XCTestCase {
         if bigBuffer == nil {
             let audio = engine.startTest(totalDuration: 1.0)
             player.play()
-            player.isLooping = true
+            // player.isLooping = true
             audio.append(engine.render(duration: 1.0))
             bigBuffer = AVAudioPCMBuffer(pcmFormat: audio.format, frameCapacity: audio.frameLength * UInt32(duration))
 

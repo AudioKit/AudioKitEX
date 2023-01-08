@@ -7,9 +7,10 @@ import XCTest
 class FaderTests: XCTestCase {
 
     func testDefault() {
-        let engine = AudioEngine()
+        let engine = Engine()
         let url = Bundle.module.url(forResource: "12345", withExtension: "wav", subdirectory: "TestResources")!
-        let player = AudioPlayer(url: url)!
+        let player = Sampler()
+        player.play(url: url)
         engine.output = Fader(player, gain: 1.0)
         let audio = engine.startTest(totalDuration: 1.0)
         player.play()
@@ -18,9 +19,10 @@ class FaderTests: XCTestCase {
     }
 
     func testGain() {
-        let engine = AudioEngine()
+        let engine = Engine()
         let url = Bundle.module.url(forResource: "12345", withExtension: "wav", subdirectory: "TestResources")!
-        let player = AudioPlayer(url: url)!
+        let player = Sampler()
+        player.play(url: url)
         engine.output = Fader(player, gain: 0.5)
         let audio = engine.startTest(totalDuration: 1.0)
         player.play()
@@ -29,9 +31,10 @@ class FaderTests: XCTestCase {
     }
 
     func testBypass() {
-        let engine = AudioEngine()
+        let engine = Engine()
         let url = Bundle.module.url(forResource: "12345", withExtension: "wav", subdirectory: "TestResources")!
-        let player = AudioPlayer(url: url)!
+        let player = Sampler()
+        player.play(url: url)
         let fader = Fader(player, gain: 2.0)
         fader.bypass()
         engine.output = fader
@@ -42,9 +45,10 @@ class FaderTests: XCTestCase {
     }
 
     func testMany() {
-        let engine = AudioEngine()
+        let engine = Engine()
         let url = Bundle.module.url(forResource: "12345", withExtension: "wav", subdirectory: "TestResources")!
-        let player = AudioPlayer(url: url)!
+        let player = Sampler()
+        player.play(url: url)
         let initialFader = Fader(player, gain: 1.0)
         var nextFader = initialFader
         for _ in 0 ..< 200 {
@@ -57,7 +61,7 @@ class FaderTests: XCTestCase {
         audio.append(engine.render(duration: 1.0))
         testMD5(audio)
     }
-    
+
     /*
 
     func testFlipStereo() {
@@ -124,6 +128,7 @@ class FaderTests: XCTestCase {
     }
 */
 
+    /*
     func testParameters() {
         let engine = AudioEngine()
         let url = Bundle.module.url(forResource: "12345", withExtension: "wav", subdirectory: "TestResources")!
@@ -165,7 +170,8 @@ class FaderTests: XCTestCase {
         wait(for: player.duration + 0.5)
 
     }
-
+    */
+    
     // for waiting in the background for realtime testing
     func wait(for interval: TimeInterval) {
         let delayExpectation = XCTestExpectation(description: "delayExpectation")

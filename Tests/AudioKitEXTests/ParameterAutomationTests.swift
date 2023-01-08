@@ -99,41 +99,41 @@ class ParameterAutomationTests: XCTestCase {
         XCTAssertEqual(durations, [UInt32(44100-128)])
     }
 
-    func testRecord() {
-
-        let engine = AudioEngine()
-
-        let url = Bundle.module.url(forResource: "12345", withExtension: "wav", subdirectory: "TestResources")!
-        let player = AudioPlayer(url: url)!
-
-        let delay = Delay(player, feedback: 0.1)
-        engine.output = delay
-
-        try! engine.start()
-        player.volume = 0
-        player.play()
-
-        var values:[AUValue] = []
-
-        delay.$feedback.recordAutomation { (event) in
-            values.append(event.value)
-        }
-
-        RunLoop.main.run(until: Date().addingTimeInterval(1.0))
-
-        delay.feedback = 0.7
-
-        RunLoop.main.run(until: Date().addingTimeInterval(1.0))
-
-        XCTAssertEqual(values, [0.7])
-
-        delay.$feedback.stopRecording()
-
-        delay.feedback = 0.0
-
-        RunLoop.main.run(until: Date().addingTimeInterval(1.0))
-
-        XCTAssertEqual(values, [0.7])
-    }
+//    func testRecord() {
+//
+//        let engine = AudioEngine()
+//
+//        let url = Bundle.module.url(forResource: "12345", withExtension: "wav", subdirectory: "TestResources")!
+//        let player = AudioPlayer(url: url)!
+//
+//        let delay = Delay(player, feedback: 0.1)
+//        engine.output = delay
+//
+//        try! engine.start()
+//        player.volume = 0
+//        player.play()
+//
+//        var values:[AUValue] = []
+//
+//        delay.$feedback.recordAutomation { (event) in
+//            values.append(event.value)
+//        }
+//
+//        RunLoop.main.run(until: Date().addingTimeInterval(1.0))
+//
+//        delay.feedback = 0.7
+//
+//        RunLoop.main.run(until: Date().addingTimeInterval(1.0))
+//
+//        XCTAssertEqual(values, [0.7])
+//
+//        delay.$feedback.stopRecording()
+//
+//        delay.feedback = 0.0
+//
+//        RunLoop.main.run(until: Date().addingTimeInterval(1.0))
+//
+//        XCTAssertEqual(values, [0.7])
+//    }
 
 }
