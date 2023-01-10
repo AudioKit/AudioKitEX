@@ -12,8 +12,8 @@
 extern "C"
 AURenderObserver ParameterAutomationGetRenderObserver(AUParameterAddress address,
                                                       AUScheduleParameterBlock scheduleParameterBlock,
-                                                      float sampleRate,
-                                                      float startSampleTime,
+                                                      double sampleRate,
+                                                      double startSampleTime,
                                                       const struct AutomationEvent* eventsArray,
                                                       size_t count) {
 
@@ -33,8 +33,8 @@ AURenderObserver ParameterAutomationGetRenderObserver(AUParameterAddress address
     {
         if (actionFlags != kAudioUnitRenderAction_PreRender) return;
 
-        float blockStartTime = (timestamp->mSampleTime - startSampleTime) / sampleRate;
-        float blockEndTime = blockStartTime + frameCount / sampleRate;
+        double blockStartSample = timestamp->mSampleTime - startSampleTime;
+        double blockEndSample = blockStartSample + frameCount;
 
         AUValue initial = NAN;
 
@@ -42,7 +42,9 @@ AURenderObserver ParameterAutomationGetRenderObserver(AUParameterAddress address
         // an initial value.
         for (; index < count; ++index) {
             auto event = events[index];
-            if ( !(event.startTime + event.rampDuration < blockStartTime) ) {
+            double eventStartSample = event.startTime * sampleRate;
+            double rampSampleDuration = event.rampDuration * sampleRate;
+            if ( !(eventStartSample + rampSampleDuration < blockStartSample) ) {
                 break;
             }
             initial = event.targetValue;
@@ -59,11 +61,12 @@ AURenderObserver ParameterAutomationGetRenderObserver(AUParameterAddress address
         // Apply parameter automation for the segment.
         while (index < count) {
             auto event = events[index];
+            double eventStartSample = event.startTime * sampleRate;
 
             // Is it after the current block?
-            if (event.startTime >= blockEndTime) break;
+            if (eventStartSample >= blockEndSample) break;
 
-            AUEventSampleTime startTime = (event.startTime - blockStartTime) * sampleRate;
+            AUEventSampleTime startTime = eventStartSample - blockStartSample;
             AUAudioFrameCount duration = event.rampDuration * sampleRate;
 
             // If the event has already started, ensure we hit the targetValue
