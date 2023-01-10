@@ -9,17 +9,17 @@ class ParameterAutomationTests: XCTestCase {
 
     func observerTest(events: [AutomationEvent],
                       sampleTime: Float64,
-                      startTime: Float = 0) -> ([AUParameterAddress], [AUValue], [AUAudioFrameCount]) {
+                      startTime: Double = 0) -> ([AUParameterAddress], [(AUValue, AUEventSampleTime)], [AUAudioFrameCount]) {
 
         let address = AUParameterAddress(42)
 
         var addresses: [AUParameterAddress] = []
-        var values: [AUValue] = []
+        var values: [(AUValue, AUEventSampleTime)] = []
         var durations: [AUAudioFrameCount] = []
 
         let scheduleParameterBlock: AUScheduleParameterBlock = { (sampleTime, rampDuration, address, value) in
             addresses.append(address)
-            values.append(value)
+            values.append((value, sampleTime))
             durations.append(rampDuration)
         }
 
@@ -42,13 +42,25 @@ class ParameterAutomationTests: XCTestCase {
 
     func testSimpleAutomation() throws {
 
-        let events = [ AutomationEvent(targetValue: 880, startTime: 0, rampDuration: 1.0) ]
+        let events = [AutomationEvent(targetValue: 880, startTime: 0, rampDuration: 0)]
 
         let (addresses, values, _) = observerTest(events: events, sampleTime: 0)
 
         // order is: taper, skew, offset, value
         XCTAssertEqual(addresses, [42])
-        XCTAssertEqual(values, [880.0])
+        XCTAssertEqual(values.map(\.0), [880.0])
+    }
+
+    func testSimpleAutomationWithBigValues() throws {
+
+        let events = [AutomationEvent(targetValue: 880, startTime: 0, rampDuration: 0)]
+
+        let (addresses, values, _) = observerTest(events: events, sampleTime: 1000000000, startTime: 1000000001)
+
+        // order is: taper, skew, offset, value
+        XCTAssertEqual(addresses, [42])
+        XCTAssertEqual(values.map(\.0), [880.0])
+        XCTAssertEqual(values.map(\.1), [1])
     }
 
     func testPastAutomation() {
@@ -59,7 +71,7 @@ class ParameterAutomationTests: XCTestCase {
 
         // If the automation is in the past, the value should be set to the final value.
         XCTAssertEqual(addresses, [42])
-        XCTAssertEqual(values, [880.0])
+        XCTAssertEqual(values.map(\.0), [880.0])
     }
 
     func testPastAutomationTwo() {
@@ -71,7 +83,7 @@ class ParameterAutomationTests: XCTestCase {
 
         // If the automation is in the past, the value should be set to the final value.
         XCTAssertEqual(addresses, [42])
-        XCTAssertEqual(values, [440.0])
+        XCTAssertEqual(values.map(\.0), [440.0])
 
     }
 
@@ -83,7 +95,7 @@ class ParameterAutomationTests: XCTestCase {
 
         // If the automation is in the future, we should not get anything.
         XCTAssertEqual(addresses, [])
-        XCTAssertEqual(values, [])
+        XCTAssertEqual(values.map(\.0), [])
     }
 
     func testAutomationMiddle() {
@@ -95,7 +107,7 @@ class ParameterAutomationTests: XCTestCase {
         let (addresses, values, durations) = observerTest(events: events, sampleTime: 128)
 
         XCTAssertEqual(addresses, [42])
-        XCTAssertEqual(values, [1.0])
+        XCTAssertEqual(values.map(\.0), [1.0])
         XCTAssertEqual(durations, [UInt32(44100-128)])
     }
 
