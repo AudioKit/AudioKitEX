@@ -26,8 +26,8 @@ struct AutomationEvent {
 /// Returns a render observer block which will apply the automation to the selected parameter.
 AURenderObserver ParameterAutomationGetRenderObserver(AUParameterAddress address,
                                                       AUScheduleParameterBlock scheduleParameterBlock,
-                                                      float sampleRate,
-                                                      float startSampleTime,
+                                                      double sampleRate,
+                                                      double startSampleTime,
                                                       const struct AutomationEvent* events,
                                                       size_t count);
 

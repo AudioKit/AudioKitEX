@@ -17,7 +17,6 @@ FOUNDATION_EXPORT const unsigned char AudioKitVersionString[];
 #import "DSPBase.h"
 
 #import "ExceptionCatcher.h"
-#import "AUParameterTreeExt.h"
 
 // Testing
 #import "DebugDSP.h"
