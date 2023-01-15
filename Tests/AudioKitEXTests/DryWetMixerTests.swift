@@ -1,13 +1,13 @@
 // Copyright AudioKit. All Rights Reserved. Revision History at http://github.com/AudioKit/AudioKit/
 
 import AudioKit
+import AudioKitEX
 import AVFoundation
 import XCTest
 
-/* Commented out until v6
 class DryWetMixerTests: XCTestCase {
-    let input1 = Oscillator(waveform: Table(.triangle))
-    let input2 = Oscillator(waveform: Table(.triangle), frequency: 1280)
+    let input1 = PlaygroundOscillator(waveform: Table(.triangle))
+    let input2 = PlaygroundOscillator(waveform: Table(.triangle), frequency: 1280)
 
     func testDefault() {
         let engine = AudioEngine()
@@ -224,4 +224,3 @@ class DryWetMixerTests: XCTestCase {
      }
      */
 }
-*/
