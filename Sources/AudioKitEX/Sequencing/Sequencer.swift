@@ -7,7 +7,7 @@ import AudioKit
 
 /// Open-source AudioKit Sequencer
 ///
-/// Up until AudioKit 4.8, this was a different class. The old class is now renamed "AppleSequencer"
+/// Up until AudioKit 4.8 this class was named "AppleSequencer"
 open class Sequencer {
     /// Array of sequencer tracks
     open var tracks = [SequencerTrack]()
