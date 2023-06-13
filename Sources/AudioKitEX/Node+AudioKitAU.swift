@@ -16,6 +16,27 @@ extension Node {
     }
 }
 
+public func registerAndInstantiateAU(componentDescription: AudioComponentDescription) -> AUAudioUnit {
+
+    AUAudioUnit.registerSubclass(AudioKitAU.self,
+                                 as: componentDescription,
+                                 name: "Local internal AU",
+                                 version: .max)
+
+    var result: AUAudioUnit!
+    let runLoop = RunLoop.current
+    AUAudioUnit.instantiate(with: componentDescription) { auAudioUnit, _ in
+        guard let au = auAudioUnit else { fatalError("Unable to instantiate AUAudioUnit") }
+        runLoop.perform {
+            result = au
+        }
+    }
+    while result == nil {
+        runLoop.run(until: .now + 0.01)
+    }
+    return result
+}
+
 /// Create an AVAudioUnit for the given description
 /// - Parameter componentDescription: Audio Component Description
 func instantiate(componentDescription: AudioComponentDescription) -> AVAudioUnit {
