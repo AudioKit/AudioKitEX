@@ -15,7 +15,7 @@ public class Fader: Node {
     /// Underlying AVAudioNode
     public var avAudioNode = instantiate(effect: "fder")
 
-    public var au: AUAudioUnit {
+    public var auAudioUnit: AUAudioUnit {
         avAudioNode.auAudioUnit
     }
 

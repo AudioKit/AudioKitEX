@@ -8,8 +8,8 @@ import AudioKit
 extension Node {
 
     /// Audio Unit for AudioKit
-    public var au: AudioKitAU {
-        guard let au = avAudioNode.auAudioUnit as? AudioKitAU else {
+    public var akau: AudioKitAU {
+        guard let akau = (auAudioUnit as? AudioKitAU) else {
             fatalError("Wrong audio unit type.")
         }
         return au
