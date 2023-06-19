@@ -41,6 +41,10 @@ public func instantiateAU(instrument code: String) -> AUAudioUnit {
     registerAndInstantiateAU(componentDescription: AudioComponentDescription(instrument: code))
 }
 
+public func instantiateAU(effect code: String) -> AUAudioUnit {
+    registerAndInstantiateAU(componentDescription: AudioComponentDescription(effect: code))
+}
+
 /// Create an AVAudioUnit for the given description
 /// - Parameter componentDescription: Audio Component Description
 func instantiate(componentDescription: AudioComponentDescription) -> AVAudioUnit {
