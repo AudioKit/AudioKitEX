@@ -57,6 +57,6 @@ extension Node where Self: MIDITriggerable {
     ///
     public func trigger(note: MIDINoteNumber, velocity: MIDIVelocity = 127) {
         start()
-        au.trigger(note: note, velocity: velocity)
+//        akau.trigger(note: note, velocity: velocity)
     }
 }

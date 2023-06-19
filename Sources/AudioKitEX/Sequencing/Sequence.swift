@@ -121,17 +121,17 @@ public struct NoteEventSequence: Equatable {
         notes.removeAll { $0.noteOn.data1 == noteNumber }
     }
 
-    /// Add MIDI data to the track as an event
-    public mutating func add(status: MIDIStatus, data1: MIDIByte, data2: MIDIByte, position: Double) {
-        events.append(SequenceEvent(status: status.byte, data1: data1, data2: data2, beat: position))
-    }
-
-    /// Add a MIDI event to the track at a specific position
-    public mutating func add(event: MIDIEvent, position: Double) {
-        if let status = event.status, event.data.count > 2 {
-            add(status: status, data1: event.data[1], data2: event.data[2], position: position)
-        }
-    }
+//    /// Add MIDI data to the track as an event
+//    public mutating func add(status: MIDIStatus, data1: MIDIByte, data2: MIDIByte, position: Double) {
+//        events.append(SequenceEvent(status: status.byte, data1: data1, data2: data2, beat: position))
+//    }
+//
+//    /// Add a MIDI event to the track at a specific position
+//    public mutating func add(event: MIDIEvent, position: Double) {
+//        if let status = event.status, event.data.count > 2 {
+//            add(status: status, data1: event.data[1], data2: event.data[2], position: position)
+//        }
+//    }
     /// All MIDI events ordered by earliest beat time
     /// - Returns: Array of SequenceEvents
     public func beatTimeOrderedEvents() -> [SequenceEvent] {

@@ -113,13 +113,13 @@ open class SequencerTrack {
                      duration: duration)
     }
 
-    /// Add a MIDI event to the track
-    /// - Parameters:
-    ///   - event: Event to add
-    ///   - position: Location in time in beats to add the event at
-    public func add(event: MIDIEvent, position: Double) {
-        sequence.add(event: event, position: position)
-    }
+//    /// Add a MIDI event to the track
+//    /// - Parameters:
+//    ///   - event: Event to add
+//    ///   - position: Location in time in beats to add the event at
+//    public func add(event: MIDIEvent, position: Double) {
+//        sequence.add(event: event, position: position)
+//    }
     
     /// Remove the notes in the track
     public func clear() {

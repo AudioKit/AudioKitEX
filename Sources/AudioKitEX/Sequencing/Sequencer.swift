@@ -52,14 +52,14 @@ open class Sequencer {
         }
     }
 
-    /// Initialize the sequencer from a MIDI File
-    /// - Parameters:
-    ///   - fileURL: Location of the MIDI File
-    ///   - targetNodes: Nodes to place the tracks from the MIDI file into
-    public convenience init(fromURL fileURL: URL, targetNodes: [Node]) {
-        self.init(targetNodes: targetNodes)
-        load(midiFileURL: fileURL)
-    }
+//    /// Initialize the sequencer from a MIDI File
+//    /// - Parameters:
+//    ///   - fileURL: Location of the MIDI File
+//    ///   - targetNodes: Nodes to place the tracks from the MIDI file into
+//    public convenience init(fromURL fileURL: URL, targetNodes: [Node]) {
+//        self.init(targetNodes: targetNodes)
+//        load(midiFileURL: fileURL)
+//    }
 
     /// Start playback of the track from the current position (like unpause)
     public func play() {
@@ -86,36 +86,36 @@ open class Sequencer {
         for track in tracks { track.rewind() }
     }
 
-    /// Load MIDI data from a file URL
-    public func load(midiFileURL: URL) {
-        load(midiFile: MIDIFile(url: midiFileURL))
-    }
-
-    /// Load MIDI data from a file
-    /// - Parameter midiFile: MIDI File to load data out of
-    public func load(midiFile: MIDIFile) {
-        let midiTracks = midiFile.tracks
-        if midiTracks.count > tracks.count {
-            Log("Error: Track count and file track count do not match ",
-                  "dropped \(midiTracks.count - tracks.count) tracks")
-        }
-        if tracks.count > midiTracks.count {
-            Log("Error: Track count less than file track count, ignoring \(tracks.count - midiTracks.count) nodes")
-        }
-        for index in 0 ..< min(midiTracks.count, tracks.count) {
-            let track = midiTracks[index]
-            tracks[index].clear()
-            var sequence = NoteEventSequence()
-            for event in track.channelEvents {
-                if let pos = event.positionInBeats {
-                    sequence.add(event: event, position: pos)
-                }
-            }
-            tracks[index].sequence = sequence
-            tracks[index].length = track.length
-        }
-        length = tracks.max(by: { $0.length > $1.length })?.length ?? 0
-    }
+//    /// Load MIDI data from a file URL
+//    public func load(midiFileURL: URL) {
+//        load(midiFile: MIDIFile(url: midiFileURL))
+//    }
+//
+//    /// Load MIDI data from a file
+//    /// - Parameter midiFile: MIDI File to load data out of
+//    public func load(midiFile: MIDIFile) {
+//        let midiTracks = midiFile.tracks
+//        if midiTracks.count > tracks.count {
+//            Log("Error: Track count and file track count do not match ",
+//                  "dropped \(midiTracks.count - tracks.count) tracks")
+//        }
+//        if tracks.count > midiTracks.count {
+//            Log("Error: Track count less than file track count, ignoring \(tracks.count - midiTracks.count) nodes")
+//        }
+//        for index in 0 ..< min(midiTracks.count, tracks.count) {
+//            let track = midiTracks[index]
+//            tracks[index].clear()
+//            var sequence = NoteEventSequence()
+//            for event in track.channelEvents {
+//                if let pos = event.positionInBeats {
+//                    sequence.add(event: event, position: pos)
+//                }
+//            }
+//            tracks[index].sequence = sequence
+//            tracks[index].length = track.length
+//        }
+//        length = tracks.max(by: { $0.length > $1.length })?.length ?? 0
+//    }
 
     /// Add a MIDI noteOn and noteOff to the track
     /// - Parameters:
@@ -143,19 +143,19 @@ open class Sequencer {
                                         duration: duration)
     }
 
-    /// Add a MIDI event to the track
-    /// - Parameters:
-    ///   - event: Event to add
-    ///   - position: Location in time in beats to add the event at
-    ///   - trackIndex: Which track to add the event
-    @available(*, deprecated, message: "Access track directly for editing - sequencer.tracks[i].add(...)")
-    public func add(event: MIDIEvent, position: Double, trackIndex: Int = 0) {
-        guard tracks.count > trackIndex, trackIndex >= 0 else {
-            Log("Track index \(trackIndex) out of range (sequencer has \(tracks.count) tracks)")
-            return
-        }
-        tracks[trackIndex].sequence.add(event: event, position: position)
-    }
+//    /// Add a MIDI event to the track
+//    /// - Parameters:
+//    ///   - event: Event to add
+//    ///   - position: Location in time in beats to add the event at
+//    ///   - trackIndex: Which track to add the event
+//    @available(*, deprecated, message: "Access track directly for editing - sequencer.tracks[i].add(...)")
+//    public func add(event: MIDIEvent, position: Double, trackIndex: Int = 0) {
+//        guard tracks.count > trackIndex, trackIndex >= 0 else {
+//            Log("Track index \(trackIndex) out of range (sequencer has \(tracks.count) tracks)")
+//            return
+//        }
+//        tracks[trackIndex].sequence.add(event: event, position: position)
+//    }
 
     /// Remove all notes
     public func clear() {
