@@ -17,7 +17,7 @@ open class CallbackInstrument: Node {
     /// Connected nodes
     public var connections: [Node] { [] }
 
-    /// Underlying AVAudioNode
+    /// Underlying AUAudioUnit
     public var auAudioUnit: AUAudioUnit = instantiateAU(instrument: "clbk")
 
     /// Initialize the callback instrument

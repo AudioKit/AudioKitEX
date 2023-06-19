@@ -12,12 +12,8 @@ public class Fader: Node {
     /// Connected nodes
     public var connections: [Node] { [input] }
 
-    /// Underlying AVAudioNode
-    public var avAudioNode = instantiate(effect: "fder")
-
-    public var auAudioUnit: AUAudioUnit {
-        avAudioNode.auAudioUnit
-    }
+    /// Underlying AUAudioUnit
+    public var auAudioUnit = instantiateAU(effect: "fder")
 
     // MARK: - Parameters
 
