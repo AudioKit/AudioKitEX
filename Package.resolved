@@ -1,0 +1,43 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "AudioKit",
+        "repositoryURL": "https://github.com/AudioKit/AudioKit",
+        "state": {
+          "branch": "v6",
+          "revision": "62aaf7c3c48b1abf55b26baa77df64ffd028e7fc",
+          "version": null
+        }
+      },
+      {
+        "package": "MIDIKit",
+        "repositoryURL": "https://github.com/orchetect/midikit",
+        "state": {
+          "branch": null,
+          "revision": "630e42255190701f58b373c41862796e766ff018",
+          "version": "0.8.9"
+        }
+      },
+      {
+        "package": "swift-atomics",
+        "repositoryURL": "https://github.com/apple/swift-atomics",
+        "state": {
+          "branch": null,
+          "revision": "6c89474e62719ddcc1e9614989fff2f68208fe10",
+          "version": "1.1.0"
+        }
+      },
+      {
+        "package": "TimecodeKit",
+        "repositoryURL": "https://github.com/orchetect/TimecodeKit",
+        "state": {
+          "branch": null,
+          "revision": "6f65472a671fef760ca8fb2e9ca7cc25bc220aad",
+          "version": "1.6.10"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
