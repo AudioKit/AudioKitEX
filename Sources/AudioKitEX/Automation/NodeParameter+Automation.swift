@@ -26,7 +26,7 @@ extension NodeParameter {
             
             guard let observer = ParameterAutomationGetRenderObserver(parameter.address,
                                                                       auAudioUnit!.scheduleParameterBlock,
-                                                                      Float(Settings.sampleRate),
+                                                                      Float(44100),
                                                                       Float(startTime),
                                                                       automationBaseAddress,
                                                                       events.count) else { return }
