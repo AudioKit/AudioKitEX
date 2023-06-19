@@ -12,7 +12,7 @@ extension Node {
         guard let akau = (auAudioUnit as? AudioKitAU) else {
             fatalError("Wrong audio unit type.")
         }
-        return au
+        return akau
     }
 }
 
@@ -35,6 +35,10 @@ public func registerAndInstantiateAU(componentDescription: AudioComponentDescrip
         runLoop.run(until: .now + 0.01)
     }
     return result
+}
+
+public func instantiateAU(instrument code: String) -> AUAudioUnit {
+    registerAndInstantiateAU(componentDescription: AudioComponentDescription(instrument: code))
 }
 
 /// Create an AVAudioUnit for the given description

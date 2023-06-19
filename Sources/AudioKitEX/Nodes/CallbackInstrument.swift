@@ -7,6 +7,8 @@ import AudioKit
 #if !os(tvOS)
 import Foundation
 
+public typealias MIDICallback = (UInt8, UInt8, UInt8) -> Void
+
 /// New sample-accurate version of CallbackInstrument
 /// Old CallbackInstrument renamed to MIDICallbackInstrument
 /// If you have used this before, you should be able to simply switch to MIDICallbackInstrument
@@ -16,7 +18,7 @@ open class CallbackInstrument: Node {
     public var connections: [Node] { [] }
 
     /// Underlying AVAudioNode
-    public var avAudioNode = instantiate(instrument: "clbk")
+    public var auAudioUnit: AUAudioUnit = instantiateAU(instrument: "clbk")
 
     /// Initialize the callback instrument
     /// - Parameter midiCallback: Optional MIDI Callback
@@ -25,10 +27,6 @@ open class CallbackInstrument: Node {
         if let callback = midiCallback {
             akCallbackInstrumentSetCallback(au.dsp, callback)
         }
-    }
-
-    public var au: AUAudioUnit {
-        avAudioNode.auAudioUnit
     }
 
 }
