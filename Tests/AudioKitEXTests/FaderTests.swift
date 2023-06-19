@@ -7,7 +7,7 @@ import XCTest
 class FaderTests: XCTestCase {
 
     func testDefault() {
-        let engine = Engine()
+        let engine = AudioEngine()
         let url = Bundle.module.url(forResource: "12345", withExtension: "wav", subdirectory: "TestResources")!
         let player = Sampler()
         player.play(url: url)
@@ -19,7 +19,7 @@ class FaderTests: XCTestCase {
     }
 
     func testGain() {
-        let engine = Engine()
+        let engine = AudioEngine()
         let url = Bundle.module.url(forResource: "12345", withExtension: "wav", subdirectory: "TestResources")!
         let player = Sampler()
         player.play(url: url)
@@ -31,7 +31,7 @@ class FaderTests: XCTestCase {
     }
 
     func testBypass() {
-        let engine = Engine()
+        let engine = AudioEngine()
         let url = Bundle.module.url(forResource: "12345", withExtension: "wav", subdirectory: "TestResources")!
         let player = Sampler()
         player.play(url: url)
@@ -45,7 +45,7 @@ class FaderTests: XCTestCase {
     }
 
     func testMany() {
-        let engine = Engine()
+        let engine = AudioEngine()
         let url = Bundle.module.url(forResource: "12345", withExtension: "wav", subdirectory: "TestResources")!
         let player = Sampler()
         player.play(url: url)

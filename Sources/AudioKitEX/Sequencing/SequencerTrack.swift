@@ -41,7 +41,7 @@ open class SequencerTrack {
     }
 
     deinit {
-        if let auAudioUnit = targetNode?.avAudioNode.auAudioUnit {
+        if let auAudioUnit = targetNode?.auAudioUnit {
             if let token = renderObserverToken {
                 auAudioUnit.removeRenderObserver(token)
             }
@@ -134,7 +134,7 @@ open class SequencerTrack {
     private var renderObserverToken: Int?
 
     private func updateSequence() {
-        guard let block = targetNode?.avAudioNode.auAudioUnit.scheduleMIDIEventBlock else {
+        guard let block = targetNode?.auAudioUnit.scheduleMIDIEventBlock else {
             Log("Failed to get AUScheduleMIDIEventBlock")
             return
         }
@@ -152,7 +152,7 @@ open class SequencerTrack {
                                             eventsPtr.baseAddress,
                                             orderedEvents.count,
                                             settings,
-                                            Settings.sampleRate,
+                                            44100,
                                             block)
 
 
@@ -164,7 +164,7 @@ open class SequencerTrack {
     private func addRenderObserver() {
         if renderObserverToken == nil {
             guard let observer = akSequencerGetRenderObserver(engine) else { return }
-            guard let auAudioUnit = targetNode?.avAudioNode.auAudioUnit else { return }
+            guard let auAudioUnit = targetNode?.auAudioUnit else { return }
             renderObserverToken = auAudioUnit.token(byAddingRenderObserver: observer)
         }
     }

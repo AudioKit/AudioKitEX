@@ -12,7 +12,7 @@ public protocol Triggerable {
 extension Node where Self: Triggerable {
     /// Trigger the sound with current parameters
     public func trigger() {
-        au.trigger()
+        akau.trigger()
     }
 }
 
@@ -27,12 +27,12 @@ public protocol Gated {
 extension Node where Self: Gated {
     /// Start the gate
     public func openGate() {
-        au.trigger()
+        akau.trigger()
     }
     
     /// Stop the gate
     public func closeGate() {
-        au.detrigger()
+        akau.detrigger()
     }
 
 }

@@ -7,7 +7,7 @@ import AudioKit
 #if !os(tvOS)
 import Foundation
 
-public typealias MIDICallback = (UInt8, UInt8, UInt8) -> Void
+public typealias MIDICallback = (MIDIByte, MIDIByte, MIDIByte) -> Void
 
 /// New sample-accurate version of CallbackInstrument
 /// Old CallbackInstrument renamed to MIDICallbackInstrument
@@ -25,7 +25,7 @@ open class CallbackInstrument: Node {
     public init(midiCallback: MIDICallback? = nil) {
         
         if let callback = midiCallback {
-            akCallbackInstrumentSetCallback(au.dsp, callback)
+            akCallbackInstrumentSetCallback(akau.dsp, callback)
         }
     }
 
