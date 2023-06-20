@@ -9,37 +9,43 @@ class CallbackInstrumentTests: XCTestCase {
 
     var instrument = CallbackInstrument()
 
-//    func testDefault() {
-//        let engine = AudioEngine()
-//
-//        let expect = XCTestExpectation(description: "wait for callback")
-//        let expectedData = [MIDIEvent(noteOn: 60, velocity: 127, channel: 0),
-//                            MIDIEvent(noteOn: 61, velocity: 127, channel: 0),
-//                            MIDIEvent(noteOn: 62, velocity: 127, channel: 0)]
-//
-//        var data: [MIDIEvent] = []
-//
-//        instrument = CallbackInstrument { status, data1, data2 in
-//
-//            data.append(MIDIEvent(data: [status, data1, data2]))
-//
-//            if data.count == expectedData.count {
-//                expect.fulfill()
-//            }
-//        }
-//
-//        engine.output = instrument
-//
-//        for event in expectedData {
-//            instrument.scheduleMIDIEvent(event: event)
-//        }
-//
-//        let audio = engine.startTest(totalDuration: 3.0)
-//        audio.append(engine.render(duration: 3.0))
-//
-//        wait(for: [expect], timeout: 1.0)
-//        XCTAssertEqual(data, expectedData)
-//    }
+    func testDefault() {
+        let engine = AudioEngine()
+
+        let expect = XCTestExpectation(description: "wait for callback")
+        let expectedEvents: [MIDIEvent] = [
+            .noteOn(60, velocity: .midi1(127), channel: 0),
+            .noteOn(61, velocity: .midi1(127), channel: 0),
+            .noteOn(62, velocity: .midi1(127), channel: 0)
+        ]
+        let expectedData: [[UInt8]] = [
+            [0x90, 60, 127],
+            [0x90, 61, 127],
+            [0x90, 62, 127]
+        ]
+
+        var callbackData: [[UInt8]] = []
+
+        instrument = CallbackInstrument { status, data1, data2 in
+            callbackData.append([status, data1, data2])
+
+            if callbackData.count == expectedData.count {
+                expect.fulfill()
+            }
+        }
+
+        engine.output = instrument
+
+        for event in expectedEvents {
+            instrument.scheduleMIDIEvent(event: event)
+        }
+
+        let audio = engine.startTest(totalDuration: 3.0)
+        audio.append(engine.render(duration: 3.0))
+
+        wait(for: [expect], timeout: 1.0)
+        XCTAssertEqual(callbackData, expectedData)
+    }
 
     func testEmptySequence() {
         let engine = AudioEngine()

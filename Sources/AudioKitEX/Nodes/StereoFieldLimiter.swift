@@ -5,7 +5,6 @@ import CAudioKitEX
 import AudioKit
 
 /// Stereo StereoFieldLimiter
-///
 public class StereoFieldLimiter: Node {
     
     let input: Node
