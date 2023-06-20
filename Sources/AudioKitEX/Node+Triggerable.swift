@@ -2,6 +2,7 @@
 
 import AVFoundation
 import AudioKit
+import MIDIKit
 
 /// To allow nodes to be triggered
 public protocol Triggerable {
@@ -45,7 +46,7 @@ public protocol MIDITriggerable {
     ///   - note: MIDI note number
     ///   - velocity: Amplitude or volume expressed as a MIDI Velocity 0-127
     ///
-    func trigger(note: MIDINoteNumber, velocity: MIDIVelocity)
+    func trigger(note: UInt7, velocity: MIDIEvent.NoteVelocity)
 }
 
 extension Node where Self: MIDITriggerable {
@@ -55,8 +56,8 @@ extension Node where Self: MIDITriggerable {
     ///   - note: MIDI note number
     ///   - velocity: Amplitude or volume expressed as a MIDI Velocity 0-127
     ///
-    public func trigger(note: MIDINoteNumber, velocity: MIDIVelocity = 127) {
+    public func trigger(note: UInt7, velocity: MIDIEvent.NoteVelocity = .midi1(127)) {
         start()
-//        akau.trigger(note: note, velocity: velocity)
+        akau.trigger(note: note, velocity: velocity)
     }
 }

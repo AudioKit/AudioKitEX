@@ -23,7 +23,6 @@ open class CallbackInstrument: Node {
     /// Initialize the callback instrument
     /// - Parameter midiCallback: Optional MIDI Callback
     public init(midiCallback: MIDICallback? = nil) {
-        
         if let callback = midiCallback {
             akCallbackInstrumentSetCallback(akau.dsp, callback)
         }

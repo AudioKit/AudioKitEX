@@ -3,6 +3,7 @@
 import CAudioKitEX
 import Foundation
 import AudioKit
+import MIDIKit
 
 #if !os(tvOS)
 
@@ -121,24 +122,25 @@ public struct NoteEventSequence: Equatable {
         notes.removeAll { $0.noteOn.data1 == noteNumber }
     }
 
-//    /// Add MIDI data to the track as an event
-//    public mutating func add(status: MIDIStatus, data1: MIDIByte, data2: MIDIByte, position: Double) {
-//        events.append(SequenceEvent(status: status.byte, data1: data1, data2: data2, beat: position))
-//    }
-//
-//    /// Add a MIDI event to the track at a specific position
-//    public mutating func add(event: MIDIEvent, position: Double) {
-//        if let status = event.status, event.data.count > 2 {
-//            add(status: status, data1: event.data[1], data2: event.data[2], position: position)
-//        }
-//    }
+    /// Add MIDI data to the track as an event
+    public mutating func add(status: MIDIByte, data1: MIDIByte, data2: MIDIByte, position: Double) {
+        events.append(SequenceEvent(status: status, data1: data1, data2: data2, beat: position))
+    }
+
+    /// Add a MIDI event to the track at a specific position
+    public mutating func add(event: MIDIEvent, position: Double) {
+        if let status = event.midi1RawStatusByte(), let dataBytes = event.midi1RawDataBytes() {
+            add(status: status, data1: dataBytes.data1 ?? 0, data2: dataBytes.data1 ?? 0, position: position)
+        }
+    }
+    
     /// All MIDI events ordered by earliest beat time
     /// - Returns: Array of SequenceEvents
     public func beatTimeOrderedEvents() -> [SequenceEvent] {
-        /// Get all SequenceEvents
+        // Get all SequenceEvents
         var allEvents: [SequenceEvent] = []
         allEvents.append(contentsOf: events)
-        /// Get all SequenceEvents from Notes
+        // Get all SequenceEvents from Notes
         var noteEvents: [SequenceEvent] = []
         for note in notes {
             noteEvents.append(note.noteOn)

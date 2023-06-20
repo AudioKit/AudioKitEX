@@ -4,6 +4,7 @@ import AudioToolbox
 import AVFoundation
 import CAudioKitEX
 import AudioKit
+import MIDIKit
 
 /// AudioUnit which instantiates a DSP kernel based on the componentSubType.
 open class AudioKitAU: AUAudioUnit {
@@ -43,7 +44,7 @@ open class AudioKitAU: AUAudioUnit {
         }
     }
     
-    /// Delllocate Render Resources
+    /// Deallocate Render Resources
     override public func deallocateRenderResources() {
         super.deallocateRenderResources()
         deallocateRenderResourcesDSP(dsp)
@@ -152,28 +153,29 @@ open class AudioKitAU: AUAudioUnit {
     
     // MARK: AudioKit
     
-//    /// Trigger something within the audio unit
-//    public func trigger(note: MIDINoteNumber, velocity: MIDIVelocity) {
-//        #if !os(tvOS)
-//        guard let midiBlock = scheduleMIDIEventBlock else {
-//            fatalError("Attempt to trigger audio unit which doesn't respond to MIDI.")
-//        }
-//        let event = MIDIEvent(noteOn: note, velocity: velocity, channel: 0)
-//        event.data.withUnsafeBufferPointer { ptr in
-//            guard let ptr = ptr.baseAddress else { return }
-//            midiBlock(AUEventSampleTimeImmediate, 0, event.data.count, ptr)
-//        }
-//        #endif
-//    }
+    /// Trigger something within the audio unit
+    public func trigger(note: UInt7, velocity: MIDIEvent.NoteVelocity) {
+        #if !os(tvOS)
+        guard let midiBlock = scheduleMIDIEventBlock else {
+            fatalError("Attempt to trigger audio unit which doesn't respond to MIDI.")
+        }
+        let event = MIDIEvent.noteOn(note, velocity: velocity, channel: 0)
+        let midi1RawBytes = event.midi1RawBytes()
+        midi1RawBytes.withUnsafeBufferPointer { ptr in
+            guard let ptr = ptr.baseAddress else { return }
+            midiBlock(AUEventSampleTimeImmediate, 0, midi1RawBytes.count, ptr)
+        }
+        #endif
+    }
     
     /// Trigger something within the audio unit
     public func trigger() {
-//        trigger(note: 64, velocity: 127)
+        trigger(note: 64, velocity: .midi1(127))
     }
     
     /// Turn off the the trigger for a gate
     public func detrigger() {
-//        trigger(note: 64, velocity: 0)
+        trigger(note: 64, velocity: .midi1(0))
     }
     
     
