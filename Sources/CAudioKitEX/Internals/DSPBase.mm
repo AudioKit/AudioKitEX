@@ -100,8 +100,13 @@ AUInternalRenderBlock DSPBase::internalRenderBlock()
     {
 
         assert( (outputBusNumber == 0) && "We don't yet support multiple output busses" );
+
+        AUAudioFrameCount inputFrameCount = framesToPull(frameCount);
+
+        assert( !(bCanProcessInPlace && (inputFrameCount != frameCount)) && "Can't process in place when inputFrameCount differs from frameCount" );
+
         if (pullInputBlock) {
-            if (bCanProcessInPlace && inputBufferLists.size() == 1) {
+            if (bCanProcessInPlace && (inputBufferLists.size() == 1)) {
                 // pull input directly to output buffer
                 inputBufferLists[0] = outputData;
                 AudioUnitRenderActionFlags inputFlags = 0;
@@ -112,13 +117,13 @@ AUInternalRenderBlock DSPBase::internalRenderBlock()
                 for (size_t i = 0; i < inputBufferLists.size(); i++) {
                     inputBufferLists[i] = internalBufferLists[i];
                     
-                    UInt32 byteSize = frameCount * sizeof(float);
+                    UInt32 byteSize = inputFrameCount * sizeof(float);
                     for (UInt32 ch = 0; ch < inputBufferLists[i]->mNumberBuffers; ch++) {
                         inputBufferLists[i]->mBuffers[ch].mDataByteSize = byteSize;
                     }
                     
                     AudioUnitRenderActionFlags inputFlags = 0;
-                    pullInputBlock(&inputFlags, timestamp, frameCount, i, inputBufferLists[i]);
+                    pullInputBlock(&inputFlags, timestamp, inputFrameCount, i, inputBufferLists[i]);
                 }
             }
         }

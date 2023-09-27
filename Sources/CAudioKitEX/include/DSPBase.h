@@ -136,6 +136,8 @@ public:
     void setBuffer(AudioBufferList* buffer, size_t busIndex);
     size_t getInputBusCount() const { return inputBufferLists.size(); }
 
+    virtual AUAudioFrameCount framesToPull(AUAudioFrameCount requestedOutputFrameCount) { return requestedOutputFrameCount; };
+
     /// Render function.
     virtual void process(FrameRange range) = 0;
     
