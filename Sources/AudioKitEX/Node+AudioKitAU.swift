@@ -63,3 +63,9 @@ public func instantiate(effect code: String) -> AVAudioNode {
 public func instantiate(mixer code: String) -> AVAudioNode {
     instantiate(componentDescription: AudioComponentDescription(mixer: code))
 }
+
+/// Create a non-realtime effect for the given unique identifier
+/// - Parameter code: Unique four letter identifier
+public func instantiate(nonRealTimeEffect code: String) -> AVAudioNode {
+    instantiate(componentDescription: AudioComponentDescription(nonRealTimeEffect: code))
+}
