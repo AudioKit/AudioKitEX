@@ -170,7 +170,6 @@ public:
 
         if (midiEvent.length != 3) return;
         uint8_t status = midiEvent.data[0] & 0xF0;
-        uint8_t channel = midiEvent.data[0] & 0x0F;
         switch (status) {
             case MIDI_NOTE_ON : {
                 uint8_t note = midiEvent.data[1];
