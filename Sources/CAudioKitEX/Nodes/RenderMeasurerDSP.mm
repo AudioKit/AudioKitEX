@@ -24,12 +24,12 @@ public:
                      AUAudioFrameCount frameCount,
                      NSInteger outputBusNumber)
         {
-            uint64 time = mach_absolute_time();
+            uint64_t time = mach_absolute_time();
             if (actionFlags == kAudioUnitRenderAction_PreRender) {
                 sharedThis->startTime = time;
                 return;
             }
-            uint64 endTime = time;
+            uint64_t endTime = time;
             sharedThis->usage.store((double)(endTime - sharedThis->startTime) / (double)frameCount);
         };
     }
@@ -40,7 +40,7 @@ public:
 
 private:
     std::atomic<double> usage;
-    uint64 startTime;
+    uint64_t startTime;
 };
 
 RenderMeasurerRef akRenderMeasurerCreate(void) {
