@@ -10,11 +10,12 @@ on:
 jobs:
   swift_test:
     name: Test
-    uses: AudioKit/ci/.github/workflows/swift_test.yml@main
-    with:
-      scheme: AudioKitEX
-      platforms: iOS macOS tvOS
-      swift-versions: 5.9
+    runs-on: macos-latest
+    steps:
+      - name: Check out AudioKitEX
+        uses: actions/checkout@v4
+      - name: Test AudioKitEX
+        run: swift test -c release
 
   # Send notification to Discord on failure.
   send_notification:
