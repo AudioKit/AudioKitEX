@@ -122,6 +122,32 @@ class SequencerEngineTests: XCTestCase {
         XCTAssertEqual(events.map { $0.timeStamp }, [0, 157, 34, 191, 136, 37, 170, 71, 16, 173, 50, 207, 152, 53, 186, 87, 32, 189, 66, 223])
     }
 
+    func testLoopLongNote() {
+        var seq = NoteEventSequence()
+
+        // Our test will loop 4 beats. Try to loop a note that is longer.
+        seq.add(noteNumber: 60, position: 0, duration: 5.0)
+
+        // Each render call will generate one beat. Render two bars.
+        let events = observerTest(sequence: seq, frameCount: 22050, renderCallCount: 8)
+
+        // We exepct an even number of note events!
+        XCTAssertEqual(events.count, 4)
+    }
+
+    func testLoopNoteNearEnd() {
+        var seq = NoteEventSequence()
+
+        // Our test will loop 4 beats. Extend a note beyond the bar.
+        seq.add(noteNumber: 60, position: 3, duration: 2.0)
+
+        // Each render call will generate one beat. Render two bars.
+        let events = observerTest(sequence: seq, frameCount: 22050, renderCallCount: 8)
+
+        // We exepct an even number of note events!
+        XCTAssertEqual(events.count, 4)
+    }
+
     func testOverlap() {
 
         var seq = NoteEventSequence()
