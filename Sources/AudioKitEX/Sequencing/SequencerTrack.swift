@@ -85,7 +85,7 @@ open class SequencerTrack {
     /// Sequence on this track
     public var sequence = NoteEventSequence() {
         willSet {
-            if newValue.totalDuration != 0.0 && newValue.totalDuration >= length {
+            if newValue.totalDuration != 0.0 && newValue.totalDuration > length {
                  Log("Warning: Note event sequence duration exceeds the bounds of the sequencer track")
                  /// extend the length to accomodate the new notes
                  length = newValue.totalDuration
