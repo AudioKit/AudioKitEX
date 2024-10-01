@@ -87,7 +87,10 @@ public struct NoteEventSequence: Equatable {
                              channel: MIDIChannel = 0,
                              position: Double,
                              duration: Double) {
-        totalDuration += duration
+        
+        let noteEndTime = position + duration
+        totalDuration = max(totalDuration, noteEndTime)
+        
         var newNote = SequenceNote()
 
         newNote.noteOn.status = noteOnByte
