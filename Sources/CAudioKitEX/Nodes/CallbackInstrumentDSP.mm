@@ -36,6 +36,8 @@ public:
     }
 
     void process(FrameRange range) override {
+        zeroOutput(range.count, range.start);
+
         count += range.count;
         if (updateTime) {
             lastFrameCount = count;

@@ -66,5 +66,20 @@ class CallbackInstrumentTests: XCTestCase {
         /// If the callback does get called, this will fail our test, adding insult to injury
         XCTAssertEqual(data, expectedData)
     }
+
+    func testClearsBuffer() {
+        let input = PlaygroundOscillator(waveform: Table([1, 1]))
+        let callback = CallbackInstrument()
+
+        let engine = AudioEngine()
+        let mixer = Mixer(input, callback)
+        engine.output = mixer
+
+        input.start()
+        let audio = engine.startTest(totalDuration: 1.0)
+        audio.append(engine.render(duration: 1.0))
+
+        XCTAssertTrue(audio.toFloatChannelData()!.flatMap { $0 }.allSatisfy { $0 == 1 })
+    }
 }
 #endif
