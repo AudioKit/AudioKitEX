@@ -87,7 +87,7 @@ public struct NoteEventSequence: Equatable {
                              channel: MIDIChannel = 0,
                              position: Double,
                              duration: Double) {
-        totalDuration += duration
+        totalDuration = max(totalDuration, position + duration) // Get last note in the track + its duration
         var newNote = SequenceNote()
 
         newNote.noteOn.status = noteOnByte
