@@ -6,6 +6,11 @@ import XCTest
 
 class FaderTests: XCTestCase {
 
+    override func setUp() {
+        super.setUp()
+        Settings.sampleRate = 44100
+    }
+
     func testDefault() {
         let engine = AudioEngine()
         let url = Bundle.module.url(forResource: "12345", withExtension: "wav", subdirectory: "TestResources")!
