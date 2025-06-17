@@ -45,7 +45,9 @@ open class AudioKitAU: AUAudioUnit {
     
     /// Delllocate Render Resources
     override public func deallocateRenderResources() {
+        let allocated = renderResourcesAllocated
         super.deallocateRenderResources()
+        guard allocated else { return }
         deallocateRenderResourcesDSP(dsp)
         internalBuffers = []
     }
