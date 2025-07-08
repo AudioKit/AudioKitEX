@@ -138,6 +138,10 @@ class SequencerTrackTests: XCTestCase {
 
         XCTAssertEqual(track.length, 4.01, "Track length should be extended with note event position + duration greater or equal to existing track length")
 
+        track.add(noteNumber: 60, position: 1.0, duration: 5.0)
+
+        XCTAssertEqual(track.length, 6.01, "Track length should be extended with note event position + duration greater or equal to existing track length")
+
         track.playFromStart()
         XCTAssertTrue(track.isPlaying)
         let audio = engine.startTest(totalDuration: 5.0)
