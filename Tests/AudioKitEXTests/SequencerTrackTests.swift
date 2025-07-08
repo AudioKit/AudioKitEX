@@ -125,9 +125,22 @@ class SequencerTrackTests: XCTestCase {
         engine.output = sampler
 
         track.add(noteNumber: 60, position: 0.0, duration: 1.0)
+        track.add(noteNumber: 60, position: 0.0, duration: 1.0)
+        track.add(noteNumber: 60, position: 0.0, duration: 1.0)
+        track.add(noteNumber: 60, position: 0.0, duration: 1.0)
+
+        XCTAssertEqual(track.length, 4, "Track length shouldn't be extended with chord duration less than existing track length")
+
+        track.add(noteNumber: 60, position: 0.0, duration: 1.0)
         track.add(noteNumber: 60, position: 1.0, duration: 1.0)
         track.add(noteNumber: 60, position: 2.0, duration: 1.0)
         track.add(noteNumber: 60, position: 3.0, duration: 1.0)
+
+        XCTAssertEqual(track.length, 4.01, "Track length should be extended with note event position + duration greater or equal to existing track length")
+
+        track.add(noteNumber: 60, position: 1.0, duration: 5.0)
+
+        XCTAssertEqual(track.length, 6.01, "Track length should be extended with note event position + duration greater or equal to existing track length")
 
         track.playFromStart()
         XCTAssertTrue(track.isPlaying)
