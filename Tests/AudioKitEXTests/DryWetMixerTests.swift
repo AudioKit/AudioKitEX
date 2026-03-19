@@ -9,6 +9,11 @@ class DryWetMixerTests: XCTestCase {
     let input1 = PlaygroundOscillator(waveform: Table(.triangle))
     let input2 = PlaygroundOscillator(waveform: Table(.triangle), frequency: 1280)
 
+    override func setUp() {
+        super.setUp()
+        Settings.sampleRate = 44100
+    }
+
     func testDefault() {
         let engine = AudioEngine()
         let mixer = DryWetMixer(dry: input1, wet: input2)
