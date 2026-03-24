@@ -273,6 +273,33 @@ final class LevelsHolder: @unchecked Sendable {
 }
 
 
+/// Minimal repro: dynamically adding a player to a running engine and calling play() crashes
+/// with "player started when in a disconnected state".
+@MainActor
+@Test
+func testDynamicPlayerCrash() throws {
+    let engine = AudioEngine()
+    let masterMixer = Mixer(name: "Master")
+    engine.output = masterMixer
+    try engine.start()
+
+    let testFileURL = Bundle.module.url(forResource: "12345", withExtension: "wav", subdirectory: "TestResources")!
+    let audioFile = try AVAudioFile(forReading: testFileURL)
+
+    // Pre-connect an intermediate mixer (like an instrument bus)
+    let instrumentMixer = Mixer(name: "Instrument")
+    masterMixer.addInput(instrumentMixer)
+
+    let player = AudioPlayer()
+    try player.load(file: audioFile, buffered: false)
+
+    let fader = Fader(player)
+    let panMixer = Mixer(fader, name: "Pan")
+    instrumentMixer.addInput(panMixer)
+
+    player.play()
+}
+
 @MainActor
 @Test
 func testAudioKitFilePlayerCanScheduleLocalMP3() throws {
