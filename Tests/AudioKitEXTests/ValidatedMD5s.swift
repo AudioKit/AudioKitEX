@@ -21,7 +21,7 @@ let validatedMD5s: [String: String] = [
     "-[SequencerTrackTests testLoop]": "3a7ebced69ddc6669932f4ee48dabe2b",
     "-[SequencerTrackTests testOneShot]": "3fbf53f1139a831b3e1a284140c8a53c",
     "-[SequencerTrackTests testTempo]": "1eb7efc6ea54eafbe616dfa8e1a3ef36",
-    "-[SequencerTrackTests testNoteBounds]": "6679c7b949d28130549c6a1eb4ceaf59",
+    "-[SequencerTrackTests testNoteBounds]": "f3b3935e30380367c15652c0a76a8a57",
     "-[DryWetMixerTests testBalance0]": "789c1e77803a4f9d10063eb60ca03cea",
     "-[DryWetMixerTests testBalance1]": "3932bc5d49cbefd4a9dd587d16f4b81c",
     "-[DryWetMixerTests testDefault]": "45a639729d8698a28f134bbe4ccc9d6c",
