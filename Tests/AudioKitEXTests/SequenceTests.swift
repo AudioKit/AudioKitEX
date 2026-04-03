@@ -25,7 +25,9 @@ class NoteEventSequenceTests: XCTestCase {
         newNote.noteOff.data2 = 127
         newNote.noteOff.beat = 2.0
         
-        XCTAssertEqual(seq, NoteEventSequence(notes: [newNote], events: [], totalDuration: 1.0))
+        XCTAssertEqual(seq, NoteEventSequence(notes: [newNote], events: [], totalDuration: 2.0))
+        // Even though note duration is 1.0, there is space at beginning of track since note position also 1.0.
+        // Total duration should be 2.0
     }
 
     func testRemoveNote() {
