@@ -174,7 +174,6 @@ struct SequencerEngineImpl {
             for (auto& event : events) {
                 // go through every event
                 int triggerTime = beatToSamples(event.beat);
-
                 if (currentEndSample > lengthInSamples() && data->settings.loopEnabled) {
                     // this buffer extends beyond the length of the loop and looping is on
                     int loopRestartInBuffer = (int)(lengthInSamples() - currentStartSample);
@@ -188,7 +187,7 @@ struct SequencerEngineImpl {
                                      offset, event.beat);
                     }
                 } else if (currentStartSample == 0 && triggerTime == lengthInSamples() && data->settings.loopEnabled) {
-                    // this event handles the case of skipped last note 
+                    // this event handles the case of skipped last note
                     sendMidiData(event.status, event.data1, event.data2,
                                  0, event.beat);
                 } else if (currentStartSample <= triggerTime && triggerTime < currentEndSample) {
@@ -196,6 +195,10 @@ struct SequencerEngineImpl {
                     int offset = (int)(triggerTime - currentStartSample);
                     sendMidiData(event.status, event.data1, event.data2,
                                  offset, event.beat);
+                } else if (currentEndSample >= lengthInSamples() && triggerTime > lengthInSamples() && data->settings.loopEnabled) {
+                    // event is happens outside loop window, schedule it at the end of frames
+                    sendMidiData(event.status, event.data1, event.data2,
+                                 frameCount, event.beat);
                 }
                
             }

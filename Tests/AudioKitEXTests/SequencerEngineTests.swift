@@ -226,6 +226,7 @@ class SequencerEngineTests: XCTestCase {
     }
 
     // events that start late in the loop are stopped after the engine is destroyed
+    // Or at the end of the loop before new note events occur
     func testShortNotesAcrossLoop() {
 
         var seq = NoteEventSequence()
@@ -239,26 +240,29 @@ class SequencerEngineTests: XCTestCase {
 
         /// 6 render calls at 120bpm, 44100 buffersize is 12 beats, default loop is 4 beats
         let events = observerTest(sequence: seq, renderCallCount: 6)
-        XCTAssertEqual(events.count, 30)
+        XCTAssertEqual(events.count, 36)
 
-        XCTAssertEqual(events.map { $0.noteNumber! }, [60, 62, 65, 60, 62, 65,
-                                                       60, 64, 67, 60, 62, 65, 60, 62, 65,
-                                                       60, 64, 67, 60, 62, 65, 60, 62, 65,
-                                                       60, 64, 67,
-                                                       67, 64, 60]) // engine destroyed
+        XCTAssertEqual(events.map { $0.noteNumber! }, [60, 62, 65, 60, 62, 65, // First 3 notes on and off
+                                                       60, 64, 67, 60, 64, 67, // Second 3 notes on and off
+                                                       60, 62, 65, 60, 62, 65, // Loop #2 first 3 notes on/off
+                                                       60, 64, 67, 60, 64, 67, // Loop #2 second 3 on/off
+                                                       60, 62, 65, 60, 62, 65, // Loop #3 first 3 on/off
+                                                       60, 64, 67, 60, 64, 67]) // Loop #3 second 3 on/off
+        // Engine cleans up remaining active note events, but there shouldn't be any since they're all handled before loop ends
 
-        XCTAssertEqual(events.compactMap { $0.status!.type }, [.noteOn, .noteOn, .noteOn, .noteOff, .noteOff, .noteOff,
-                                                               .noteOn, .noteOn, .noteOn, .noteOn, .noteOn, .noteOn,
-                                                               .noteOff, .noteOff, .noteOff, .noteOn, .noteOn, .noteOn,
-                                                               .noteOn, .noteOn, .noteOn, .noteOff, .noteOff, .noteOff,
-                                                               .noteOn, .noteOn, .noteOn,
-                                                               .noteOff, .noteOff, .noteOff]) // engine destroyed
-        XCTAssertEqual(events.map { $0.timeStamp }, [0, 0, 0, 0, 0, 0,
-                                                  43658, 43658, 43658, 0, 0, 0,
-                                                  0, 0, 0, 43658, 43658, 43658,
-                                                  0, 0, 0, 0, 0, 0,
-                                                  43658, 43658, 43658,
-                                                  1, 1, 1]) // engine destroyed
+        XCTAssertEqual(events.compactMap { $0.status!.type }, [.noteOn, .noteOn, .noteOn, .noteOff, .noteOff, .noteOff, // First 3
+                                                               .noteOn, .noteOn, .noteOn, .noteOff, .noteOff, .noteOff, // Second 3
+                                                               .noteOn, .noteOn, .noteOn, .noteOff, .noteOff, .noteOff, // First 3
+                                                               .noteOn, .noteOn, .noteOn, .noteOff, .noteOff, .noteOff, // Second 3
+                                                               .noteOn, .noteOn, .noteOn, .noteOff, .noteOff, .noteOff, // First 3
+                                                               .noteOn, .noteOn, .noteOn, .noteOff, .noteOff, .noteOff]) // Second 3
+        // Engine cleans up remaining active note events, but there shouldn't be any since they're all handled before loop ends
+        XCTAssertEqual(events.map { $0.timeStamp }, [0, 0, 0, 0, 0, 0, // First render call
+                                                     43658, 43658, 43658, 44100, 44100, 44100, // Second
+                                                     0, 0, 0, 0, 0, 0, // Third
+                                                     43658, 43658, 43658, 44100, 44100, 44100, // Fourth
+                                                     0, 0, 0, 0, 0, 0, // Fifth
+                                                     43658, 43658, 43658, 44100, 44100, 44100,]) // Sixth
     }
 }
 #endif
