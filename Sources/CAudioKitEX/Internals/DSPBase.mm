@@ -25,8 +25,9 @@ void setBufferDSP(DSPRef pDSP, AudioBufferList* buffer, size_t busIndex)
     pDSP->setBuffer(buffer, busIndex);
 }
 
-void allocateRenderResourcesDSP(DSPRef pDSP, uint32_t channelCount, double sampleRate)
+void allocateRenderResourcesDSP(DSPRef pDSP, uint32_t channelCount, double sampleRate, AUAudioFrameCount maxFramesToRender)
 {
+    pDSP->setMaximumFramesToRender(maxFramesToRender);
     pDSP->init(channelCount, sampleRate);
 }
 
