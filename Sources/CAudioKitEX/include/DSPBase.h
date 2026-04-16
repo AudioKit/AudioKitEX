@@ -18,7 +18,7 @@ size_t inputBusCountDSP(DSPRef pDSP);
 bool canProcessInPlaceDSP(DSPRef pDSP);
 
 void setBufferDSP(DSPRef pDSP, AudioBufferList* buffer, size_t busIndex);
-void allocateRenderResourcesDSP(DSPRef pDSP, uint32_t channelCount, double sampleRate);
+void allocateRenderResourcesDSP(DSPRef pDSP, uint32_t channelCount, double sampleRate, AUAudioFrameCount maxFramesToRender);
 void deallocateRenderResourcesDSP(DSPRef pDSP);
 void resetDSP(DSPRef pDSP);
 
@@ -89,6 +89,7 @@ protected:
 
     int channelCount;
     double sampleRate;
+    AUAudioFrameCount maximumFramesToRender = 0;
 
     bool isInitialized = false;
 
@@ -134,6 +135,12 @@ public:
     std::atomic<bool> isStarted{true};
     
     void setBuffer(AudioBufferList* buffer, size_t busIndex);
+
+    /// Set by AudioKitAU from AUAudioUnit.maximumFramesToRender before init().
+    /// Subclasses may read `maximumFramesToRender` in their init() override to
+    /// pre-size scratch buffers to the worst-case render size.
+    void setMaximumFramesToRender(AUAudioFrameCount frames) { maximumFramesToRender = frames; }
+    AUAudioFrameCount getMaximumFramesToRender() const { return maximumFramesToRender; }
     size_t getInputBusCount() const { return inputBufferLists.size(); }
 
     virtual AUAudioFrameCount framesToPull(AUAudioFrameCount requestedOutputFrameCount) { return requestedOutputFrameCount; };
